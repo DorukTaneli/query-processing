@@ -14,8 +14,7 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
         }
     }
 
-    //return (void*) arr;
-    return arr;
+    return (void*) arr;
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
