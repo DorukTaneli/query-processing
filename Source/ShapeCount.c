@@ -1,19 +1,28 @@
 typedef void* SortMergeJoinDatabase;
-SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
-    int db[totalNumberOfEdgesInTheEnd][3];
-    memset(db, -1, sizeof(db[0][0]) * totalNumberOfEdgesInTheEnd * 3);
-    //USE -1 to denote a free spot in the db
 
+SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
+    
+    int (*arr)[3] = malloc(totalNumberOfEdgesInTheEnd*3);
+
+    //USE -1 to denote a free spot in the db
+    for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
+        for (int j = 0; j < 3; j++) {
+            arr[i][j] = -1;
+        }
+    }
+
+    return (void*) arr;
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    struct Database* db = ((struct Database*)database);
+    int (*arr)[3] = (int (*)[3]) database;
+    arr[1][2] = 0;
 
     int insert[3] = {fromNodeID, toNodeID, edgeLabel};
 
-    for (int i = 0; i<(sizeof(db)/sizeof(db)); i++ ) {
-        if (db[i][0] == -1) {
-
+    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
+        if (arr[i][0] != -1) {
+            
         }
 
     }
