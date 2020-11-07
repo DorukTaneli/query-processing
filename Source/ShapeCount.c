@@ -14,7 +14,8 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
         }
     }
 
-    return (void*) arr;
+    //return (void*) arr;
+    return arr;
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
@@ -95,8 +96,6 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             }
         }
     }
-
-
     // edges2 toNode = edges3 fromNode
     qsort(valids2, sizeof(arr), sizeof(arr[0]), comparatorForTo);
     qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
