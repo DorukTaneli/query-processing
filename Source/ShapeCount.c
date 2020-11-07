@@ -2,7 +2,10 @@ typedef void* SortMergeJoinDatabase;
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
     
-    int (*arr)[3] = malloc(totalNumberOfEdgesInTheEnd*3);
+    //int (*arr)[3] = malloc(sizeof(int)*totalNumberOfEdgesInTheEnd*3);
+    int *arr[totalNumberOfEdgesInTheEnd];
+    for (int i=0; i<totalNumberOfEdgesInTheEnd; i++) 
+         arr[i] = (int *)malloc(3 * sizeof(int));
 
     //USE -1 to denote a free spot in the db
     for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
@@ -72,8 +75,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             rightIter++;
         else {
             //Write to output
-            valids1[validIter] = edge1matches[leftIter];
-            valids2[validIter] = edge2matches[rightIter];
+            valids1[validIter][0] = edge1matches[leftIter][0];
+            valids1[validIter][1] = edge1matches[leftIter][1];
+            valids1[validIter][2] = edge1matches[leftIter][2];
+
+            valids2[validIter][0] = edge2matches[rightIter][0];
+            valids2[validIter][1] = edge2matches[rightIter][1];
+            valids2[validIter][1] = edge2matches[rightIter][2];
             validIter++;
             
             //Check for non-uniqueness
@@ -106,7 +114,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             rightIter++;
         else {
             //Write to output
-            valids3[validIter] = edge3matches[rightIter];
+            valids3[validIter][0] = edge3matches[rightIter][0];
+            valids3[validIter][1] = edge3matches[rightIter][1];
+            valids3[validIter][2] = edge3matches[rightIter][2];
             validIter++;
             
             //Check for non-uniqueness
