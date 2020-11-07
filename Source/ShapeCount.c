@@ -160,14 +160,6 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     return count;
-
-    int comparatorForTo (const void * a, const void * b) {
-        return ((int *)a)[1] - ((int *)b)[1];
-    }
-
-    int comparatorForFrom (const void * a, const void * b) {
-        return ((int *)a)[0] - ((int *)b)[0];
-    }
     
 }
 
@@ -207,4 +199,13 @@ void CompetitionDeleteEdge(CompetitionDatabase database, int fromNodeID, int toN
 void CompetitionDeleteDatabase(CompetitionDatabase database);
 
 
+//OUR HELPER CODE BELOW
+
+int comparatorForTo (const void * a, const void * b) {
+    return ((int *)a)[1] - ((int *)b)[1];
+}
+
+int comparatorForFrom (const void * a, const void * b) {
+    return ((int *)a)[0] - ((int *)b)[0];
+}
 
