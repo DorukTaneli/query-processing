@@ -27,8 +27,10 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
     }
 }
 
-int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2,
-                          int edgeLabel3);
+int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
+
+}
+
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     int (*arr)[3] = (int (*)[3]) database;
 
@@ -42,7 +44,10 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
     }
 }
 
-void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database);
+void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
+    int (*arr)[3] = (int (*)[3]) database;
+    free(arr);
+}
 
 typedef void* HashjoinDatabase;
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd);
