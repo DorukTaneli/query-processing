@@ -30,6 +30,14 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
     }
 }
 
+int comparatorForTo (const void * a, const void * b) {
+    return ((int *)a)[1] - ((int *)b)[1];
+}
+
+int comparatorForFrom (const void * a, const void * b) {
+    return ((int *)a)[0] - ((int *)b)[0];
+}
+
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
     int (*arr)[3] = (int (*)[3]) database;
     int edge1matches[(sizeof(arr)/sizeof(arr[0]))][3];
@@ -198,14 +206,4 @@ void CompetitionDeleteEdge(CompetitionDatabase database, int fromNodeID, int toN
                            int edgeLabel);
 void CompetitionDeleteDatabase(CompetitionDatabase database);
 
-
-//OUR HELPER CODE BELOW
-
-int comparatorForTo (const void * a, const void * b) {
-    return ((int *)a)[1] - ((int *)b)[1];
-}
-
-int comparatorForFrom (const void * a, const void * b) {
-    return ((int *)a)[0] - ((int *)b)[0];
-}
 
