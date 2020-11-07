@@ -55,8 +55,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
+    
+
+
     // edges2 toNode = edges3 fromNode
     // edges3 toNode = edges1 fromNode
+
+    
     
 
 }
@@ -98,4 +103,8 @@ void CompetitionDeleteDatabase(CompetitionDatabase database);
 
 
 //OUR HELPER CODE BELOW
+
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
 
