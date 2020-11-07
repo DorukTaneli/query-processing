@@ -28,6 +28,33 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
+    int (*arr)[3] = (int (*)[3]) database;
+    int edge1matches[(sizeof(arr)/sizeof(arr[0]))][3];
+    int edge2matches[(sizeof(arr)/sizeof(arr[0]))][3];
+    int edge3matches[(sizeof(arr)/sizeof(arr[0]))][3];
+
+    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
+        if(arr[i][2] == edgeLabel1) {
+            edge1matches[i][0] = arr[i][0];
+            edge1matches[i][1] = arr[i][1];
+            edge1matches[i][2] = arr[i][2];
+        }
+
+        if(arr[i][2] == edgeLabel2) {
+            edge2matches[i][0] = arr[i][0];
+            edge2matches[i][1] = arr[i][1];
+            edge2matches[i][2] = arr[i][2];
+        }
+
+        if(arr[i][2] == edgeLabel3) {
+            edge3matches[i][0] = arr[i][0];
+            edge3matches[i][1] = arr[i][1];
+            edge3matches[i][2] = arr[i][2];
+        }
+
+        
+    }
+    
 
 }
 
