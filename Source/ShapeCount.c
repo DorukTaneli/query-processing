@@ -58,12 +58,11 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
     qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
 
-
-    
     int leftIter = 0;
     int rightIter = 0;
     int valids1[(sizeof(arr)/sizeof(arr[0]))][3];
     int valids2[(sizeof(arr)/sizeof(arr[0]))][3];
+    int validIter = 0;
     while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
         auto leftInput = edge1matches[leftIter];
         auto rightInput = edge2matches[rightIter];
@@ -73,11 +72,11 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             rightIter++;
         else {
             //Write to output
-            //valids1 += [edge1matches[leftIter]]
-            //valids2 += [edge2matches[rightIter]]
-
+            valids1[validIter] = edge1matches[leftIter];
+            valids2[validIter] = edge2matches[rightIter];
+            validIter++;
             
-
+            //Check for non-uniqueness
             if (leftInput[1] == edge1matches[leftIter+1][1])
                 leftIter++;
             else if (rightInput[0] == edge2matches[rightIter+1][0])
@@ -91,23 +90,69 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
 
     // edges2 toNode = edges3 fromNode
-    qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
+    qsort(valids2, sizeof(arr), sizeof(arr[0]), comparatorForTo);
     qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
 
-    //qsort(valids2, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    //qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    int leftIter = 0;
+    int rightIter = 0;
+    int valids3[(sizeof(arr)/sizeof(arr[0]))][3];
+    int validIter = 0;
+    while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
+        auto leftInput = valids2[leftIter];
+        auto rightInput = edge3matches[rightIter];
+        if(leftInput[1] < rightInput[0])
+            leftIter++;
+        else if(rightInput[0] < leftInput[1])
+            rightIter++;
+        else {
+            //Write to output
+            valids3[validIter] = edge3matches[rightIter];
+            validIter++;
+            
+            //Check for non-uniqueness
+            if (leftInput[1] == valids2[leftIter+1][1])
+                leftIter++;
+            else if (rightInput[0] == edge3matches[rightIter+1][0])
+                rightIter++;
+            else {
+                leftIter++;
+                rightIter++;
+            }
+        }
+    }
 
     // edges3 toNode = edges1 fromNode
-    qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    qsort(valids3, sizeof(arr), sizeof(arr[0]), comparatorForTo);
+    qsort(valids1, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
 
-    //qsort(valids3, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    //qsort(valids1, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    int leftIter = 0;
+    int rightIter = 0;
+    int count = 0;
+    while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
+        auto leftInput = valids3[leftIter];
+        auto rightInput = valids1[rightIter];
+        if(leftInput[1] < rightInput[0])
+            leftIter++;
+        else if(rightInput[0] < leftInput[1])
+            rightIter++;
+        else {
+            //Write to output
+            count++;
+            
+            //Check for non-uniqueness
+            if (leftInput[1] == valids3[leftIter+1][1])
+                leftIter++;
+            else if (rightInput[0] == valids1[rightIter+1][0])
+                rightIter++;
+            else {
+                leftIter++;
+                rightIter++;
+            }
+        }
+    }
 
-    //return size of (valids_final)
+    return count;
     
-    
-
 }
 
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
@@ -155,4 +200,6 @@ int comparatorForTo (const void * a, const void * b) {
 int comparatorForFrom (const void * a, const void * b) {
     return ((int *)a)[0] - ((int *)b)[0];
 }
+
+void
 
