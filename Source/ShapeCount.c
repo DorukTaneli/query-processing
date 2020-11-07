@@ -57,9 +57,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     // edges1 toNode = edges2 fromNode
     qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
     qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+
+
     
     int leftIter = 0;
     int rightIter = 0;
+    int valids1[(sizeof(arr)/sizeof(arr[0]))][3];
+    int valids2[(sizeof(arr)/sizeof(arr[0]))][3];
     while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
         auto leftInput = edge1matches[leftIter];
         auto rightInput = edge2matches[rightIter];
@@ -69,6 +73,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             rightIter++;
         else {
             //Write to output
+            valids1 += [edge1matches[leftIter]]
+            valids2 += [edge2matches[rightIter]]
+
             if (leftInput[1] == edge1matches[leftIter+1][1])
                 leftIter++;
             else if (rightInput[0] == edge2matches[rightIter+1][0])
