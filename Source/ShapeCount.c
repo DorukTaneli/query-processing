@@ -16,24 +16,32 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     int (*arr)[3] = (int (*)[3]) database;
-    arr[1][2] = 0;
-
-    int insert[3] = {fromNodeID, toNodeID, edgeLabel};
 
     for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
         if (arr[i][0] != -1) {
-            
+            arr[i][0] = fromNodeID;
+            arr[i][1] = toNodeID;
+            arr[i][2] = edgeLabel;
+            break;    
         }
-
     }
-
-
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2,
                           int edgeLabel3);
-void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID,
-                             int edgeLabel);
+void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    int (*arr)[3] = (int (*)[3]) database;
+
+    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
+        if (arr[i][0] == fromNodeID && arr[i][1] == toNodeID && arr[i][2] == edgeLabel) {
+            arr[i][0] = -1;
+            arr[i][1] = -1;
+            arr[i][2] = -1;
+            break; //If we have duplicates remove this
+        }
+    }
+}
+
 void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database);
 
 typedef void* HashjoinDatabase;
