@@ -55,12 +55,16 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
-    
-
+    qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
+    qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
 
     // edges2 toNode = edges3 fromNode
-    // edges3 toNode = edges1 fromNode
+    qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
+    qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
 
+    // edges3 toNode = edges1 fromNode
+    qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
+    qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
     
     
 
@@ -104,7 +108,11 @@ void CompetitionDeleteDatabase(CompetitionDatabase database);
 
 //OUR HELPER CODE BELOW
 
-int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
+int comparatorForTo (const void * a, const void * b) {
+    return ((int *)a)[1] - ((int *)b)[1];
+}
+
+int comparatorForFrom (const void * a, const void * b) {
+    return ((int *)a)[0] - ((int *)b)[0];
 }
 
