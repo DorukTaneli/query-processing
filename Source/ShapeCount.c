@@ -29,7 +29,7 @@ int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int to
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
     
-    struct edge db[totalNumberOfEdgesInTheEnd];
+    struct edge_db db;
 
     for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
         db[i].fromNode = -1;
