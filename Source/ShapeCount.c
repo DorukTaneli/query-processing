@@ -58,7 +58,7 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
 
     for (int i = 0; i<totNoEdges; i++) {
         //printf("%d\n", db[i].edgeLabel);
-        if (db[i].edgeLabel != -1) {
+        if (db[i].edgeLabel == -1) {
             db[i].fromNode = fromNodeID;
             db[i].toNode = toNodeID;
             db[i].edgeLabel = edgeLabel;
