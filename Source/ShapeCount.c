@@ -31,7 +31,7 @@ int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int to
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
 
-    struct edge_db *dbstruct = malloc (sizeof(*dbstruct) + (sizeof(struct edge) * totalNumberOfEdgesInTheEnd));
+    struct edge_db *dbstruct = malloc(sizeof(*dbstruct) + (sizeof(struct edge) * totalNumberOfEdgesInTheEnd));
     
     struct edge *db = dbstruct->db;
 
