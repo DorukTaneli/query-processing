@@ -218,10 +218,10 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
 
     for (int i = 0; i<(totNoEdges); i++) {
         if (db[i].fromNode == fromNodeID && db[i].toNode == toNodeID && db[i].edgeLabel == edgeLabel) {
+            printf("Deleted edge: %d \n", db[i].edgeLabel);
             db[i].fromNode = -1;
             db[i].toNode = -1;
             db[i].edgeLabel = -1;
-            printf("Deleted edge: %d ", db[i].edgeLabel);
             break; //If we have duplicates remove this
         }
     }
