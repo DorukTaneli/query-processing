@@ -11,6 +11,7 @@ struct edge_db {
     int db_len;
 };
 
+/*
 int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     struct edge *db = (struct edge *)database;
 
@@ -23,6 +24,7 @@ int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int to
     }
     return -1;
 }
+*/
 
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
