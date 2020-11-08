@@ -21,7 +21,7 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    struct edge db[] = (struct edge *)database;
+    struct edge *db = (struct edge *)database;
 
     int totNoEdges = sizeof(db)/sizeof(struct edge);
 
@@ -44,7 +44,7 @@ int comparatorForFrom (const void * a, const void * b) {
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
-    struct edge db[] = (struct edge *)database;
+    struct edge *db = (struct edge *)database;
 
     int totNoEdges = sizeof(db)/sizeof(struct edge);
 
@@ -180,7 +180,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 }
 
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    struct edge db[] = (struct edge *)database;
+    struct edge *db = (struct edge *)database;
     int totNoEdges = sizeof(db)/sizeof(struct edge);
 
     for (int i = 0; i<(totNoEdges); i++) {
@@ -194,7 +194,7 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
 }
 
 void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
-    struct edge db[] = (struct edge *)database;
+    struct edge *db = (struct edge *)database;
     free(db);
 }
 
