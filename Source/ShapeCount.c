@@ -1,101 +1,109 @@
 typedef void* SortMergeJoinDatabase;
 
+struct edge {
+   int fromNode;   
+   int toNode;
+   int edgeLabel;
+};
+
+
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
     
-    //int (*arr)[3] = malloc(sizeof(int)*totalNumberOfEdgesInTheEnd*3);
-    int *arr[totalNumberOfEdgesInTheEnd];
-    for (int i=0; i<totalNumberOfEdgesInTheEnd; i++) 
-         arr[i] = (int *)malloc(3 * sizeof(int));
+    struct edge db[totalNumberOfEdgesInTheEnd];
 
-    //USE -1 to denote a free spot in the db
     for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
-        for (int j = 0; j < 3; j++) {
-            arr[i][j] = -1;
-        }
+        db[i].fromNode = -1;
+        db[i].toNode = -1;
+        db[i].edgeLabel = -1;
     }
 
-    return (void*) arr;
+    return (void*) db;
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    int (*arr)[3] = (int (*)[3]) database;
+    struct edge db[] = (struct edge *)database;
 
-    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
-        if (arr[i][0] != -1) {
-            arr[i][0] = fromNodeID;
-            arr[i][1] = toNodeID;
-            arr[i][2] = edgeLabel;
+    int totNoEdges = sizeof(db)/sizeof(struct edge);
+
+    for (int i = 0; i<totNoEdges; i++) {
+        if (db[i].edgeLabel != -1) {
+            db[i].fromNode = fromNodeID;
+            db[i].toNode = toNodeID;
+            db[i].edgeLabel = edgeLabel;
             break;    
         }
     }
 }
 
 int comparatorForTo (const void * a, const void * b) {
-    return ((int *)a)[1] - ((int *)b)[1];
+    return ((struct edge *)a)->toNode - ((struct edge *)b)->toNode;
 }
 
 int comparatorForFrom (const void * a, const void * b) {
-    return ((int *)a)[0] - ((int *)b)[0];
+    return ((struct edge *)a)->fromNode - ((struct edge *)b)->fromNode;
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
-    int (*arr)[3] = (int (*)[3]) database;
-    int edge1matches[(sizeof(arr)/sizeof(arr[0]))][3];
-    int edge2matches[(sizeof(arr)/sizeof(arr[0]))][3];
-    int edge3matches[(sizeof(arr)/sizeof(arr[0]))][3];
+    struct edge db[] = (struct edge *)database;
 
-    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
-        if(arr[i][2] == edgeLabel1) {
-            edge1matches[i][0] = arr[i][0];
-            edge1matches[i][1] = arr[i][1];
-            edge1matches[i][2] = arr[i][2];
+    int totNoEdges = sizeof(db)/sizeof(struct edge);
+
+    struct edge edge1matches[totNoEdges];
+    struct edge edge2matches[totNoEdges];
+    struct edge edge3matches[totNoEdges];
+
+    for (int i = 0; i<totNoEdges; i++) {
+        if(db[i].edgeLabel == edgeLabel1) {
+            edge1matches[i].fromNode = db[i].fromNode;
+            edge1matches[i].toNode = db[i].toNode;
+            edge1matches[i].edgeLabel = db[i].edgeLabel;
         }
 
-        if(arr[i][2] == edgeLabel2) {
-            edge2matches[i][0] = arr[i][0];
-            edge2matches[i][1] = arr[i][1];
-            edge2matches[i][2] = arr[i][2];
+        if(db[i].edgeLabel == edgeLabel2) {
+            edge2matches[i].fromNode = db[i].fromNode;
+            edge2matches[i].toNode = db[i].toNode;
+            edge2matches[i].edgeLabel = db[i].edgeLabel;
         }
 
-        if(arr[i][2] == edgeLabel3) {
-            edge3matches[i][0] = arr[i][0];
-            edge3matches[i][1] = arr[i][1];
-            edge3matches[i][2] = arr[i][2];
+        if(db[i].edgeLabel == edgeLabel3) {
+            edge3matches[i].fromNode = db[i].fromNode;
+            edge3matches[i].toNode = db[i].toNode;
+            edge3matches[i].edgeLabel = db[i].edgeLabel;
         }
     }
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
-    qsort(edge1matches, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    qsort(edge2matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    qsort(edge1matches, sizeof(edge1matches), sizeof(struct edge), comparatorForTo);
+    qsort(edge2matches, sizeof(edge2matches), sizeof(struct edge), comparatorForFrom);
 
     int leftIter = 0;
     int rightIter = 0;
-    int valids1[(sizeof(arr)/sizeof(arr[0]))][3];
-    int valids2[(sizeof(arr)/sizeof(arr[0]))][3];
+    struct edge valids1[totNoEdges];
+    struct edge valids2[totNoEdges];
     int validIter = 0;
-    while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
-        auto leftInput = edge1matches[leftIter];
-        auto rightInput = edge2matches[rightIter];
-        if(leftInput[1] < rightInput[0])
+    while(leftIter < totNoEdges && rightIter < totNoEdges) {
+        struct edge leftInput = edge1matches[leftIter];
+        struct edge rightInput = edge2matches[rightIter];
+        if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
-        else if(rightInput[0] < leftInput[1])
+        else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
         else {
             //Write to output
-            valids1[validIter][0] = edge1matches[leftIter][0];
-            valids1[validIter][1] = edge1matches[leftIter][1];
-            valids1[validIter][2] = edge1matches[leftIter][2];
+            valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
+            valids1[validIter].toNode = edge1matches[leftIter].toNode;
+            valids1[validIter].edgeLabel = edge1matches[leftIter].edgeLabel;
 
-            valids2[validIter][0] = edge2matches[rightIter][0];
-            valids2[validIter][1] = edge2matches[rightIter][1];
-            valids2[validIter][1] = edge2matches[rightIter][2];
+            valids2[validIter].fromNode = edge2matches[leftIter].fromNode;
+            valids2[validIter].toNode = edge2matches[leftIter].toNode;
+            valids2[validIter].edgeLabel = edge2matches[leftIter].edgeLabel;
             validIter++;
             
             //Check for non-uniqueness
-            if (leftInput[1] == edge1matches[leftIter+1][1])
+            if (leftInput.toNode == edge1matches[leftIter+1].toNode)
                 leftIter++;
-            else if (rightInput[0] == edge2matches[rightIter+1][0])
+            else if (rightInput.fromNode == edge2matches[rightIter+1].fromNode)
                 rightIter++;
             else {
                 leftIter++;
