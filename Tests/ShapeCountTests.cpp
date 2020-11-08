@@ -12,8 +12,15 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
   //OUR TESTS:
   SECTION("Test insert edge") {
     implementation.insertEdge(db, 0, 1, 2);
+    implementation.insertEdge(db, 3, 3, 3);
+    implementation.insertEdge(db, 5, 6, 7);
+    implementation.deleteEdge(db, 3, 3, 3);
     REQUIRE(implementation.findEdge(db, 0, 1, 2) == 2);
     REQUIRE(implementation.findEdge(db, 0, 2, 3) == -1);
+    REQUIRE(implementation.findEdge(db, 3, 3, 3) == -1);
+    REQUIRE(implementation.findEdge(db, 5, 6, 7) == 7);
+    REQUIRE(implementation.findEdge(db, 5, 5, 7) == -1);
+
   }
 
   //END OF OUR TESTS
