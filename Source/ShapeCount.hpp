@@ -3,6 +3,8 @@
 extern "C" {
 typedef void* SortMergeJoinDatabase;
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd);
+int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID,
+                             int edgeLabel);
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID,
                              int edgeLabel);
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2,
@@ -13,6 +15,7 @@ void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database);
 
 typedef void* HashjoinDatabase;
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd);
+int HashjoinFindEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel);
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel);
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3);
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel);
