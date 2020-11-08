@@ -7,8 +7,8 @@ struct edge {
 };
 
 struct edge_db {
-    struct edge db[1000]; //temporary value 
     int db_len;
+    struct edge db[];
 };
 
 
