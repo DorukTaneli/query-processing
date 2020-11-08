@@ -10,11 +10,11 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
   auto* db = implementation.allocateDatabase(32);
 
   //OUR TESTS:
-  SECTION("Test insert edge") {
-    implementation.insertEdge(db, 0, 1, 2);
-    REQUIRE(implementation.findEdge(db, 0, 1, 2) == 2);
-    REQUIRE(implementation.findEdge(db, 0, 2, 3) == -1);
-  }
+  //SECTION("Test insert edge") {
+  //  implementation.insertEdge(db, 0, 1, 2);
+  //  REQUIRE(implementation.findEdge(db, 0, 1, 2) == 2);
+  //  REQUIRE(implementation.findEdge(db, 0, 2, 3) == -1);
+  //}
 
   //END OF OUR TESTS
 
