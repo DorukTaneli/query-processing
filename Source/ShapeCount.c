@@ -112,31 +112,31 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
     // edges2 toNode = edges3 fromNode
-    qsort(valids2, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    qsort(edge3matches, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    qsort(valids2, sizeof(valids2), sizeof(struct edge), comparatorForTo);
+    qsort(edge3matches, sizeof(edge3matches), sizeof(struct edge), comparatorForFrom);
 
     leftIter = 0;
     rightIter = 0;
-    int valids3[(sizeof(arr)/sizeof(arr[0]))][3];
+    struct edge valids3[totNoEdges];
     validIter = 0;
-    while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
-        auto leftInput = valids2[leftIter];
-        auto rightInput = edge3matches[rightIter];
-        if(leftInput[1] < rightInput[0])
+    while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
+        struct edge leftInput = valids2[leftIter];
+        struct edge rightInput = edge3matches[rightIter];
+        if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
-        else if(rightInput[0] < leftInput[1])
+        else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
         else {
             //Write to output
-            valids3[validIter][0] = edge3matches[rightIter][0];
-            valids3[validIter][1] = edge3matches[rightIter][1];
-            valids3[validIter][2] = edge3matches[rightIter][2];
+            valids3[validIter].fromNode = edge3matches[rightIter].fromNode;
+            valids3[validIter].toNode = edge3matches[rightIter].toNode;
+            valids3[validIter].edgeLabel = edge3matches[rightIter].edgeLabel;
             validIter++;
             
             //Check for non-uniqueness
-            if (leftInput[1] == valids2[leftIter+1][1])
+            if (leftInput.toNode == valids2[leftIter+1].toNode)
                 leftIter++;
-            else if (rightInput[0] == edge3matches[rightIter+1][0])
+            else if (rightInput.fromNode == edge3matches[rightIter+1].fromNode)
                 rightIter++;
             else {
                 leftIter++;
@@ -146,27 +146,27 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     // edges3 toNode = edges1 fromNode
-    qsort(valids3, sizeof(arr), sizeof(arr[0]), comparatorForTo);
-    qsort(valids1, sizeof(arr), sizeof(arr[0]), comparatorForFrom);
+    qsort(valids3, sizeof(valids3), sizeof(struct edge), comparatorForTo);
+    qsort(valids1, sizeof(valids1), sizeof(struct edge), comparatorForFrom);
 
     leftIter = 0;
     rightIter = 0;
     int count = 0;
-    while(leftIter < (sizeof(arr)/sizeof(arr[0]) && rightIter < (sizeof(arr)/sizeof(arr[0])))) {
-        auto leftInput = valids3[leftIter];
-        auto rightInput = valids1[rightIter];
-        if(leftInput[1] < rightInput[0])
+    while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
+        struct edge leftInput = valids3[leftIter];
+        struct edge rightInput = valids1[rightIter];
+        if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
-        else if(rightInput[0] < leftInput[1])
+        else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
         else {
             //Write to output
             count++;
             
             //Check for non-uniqueness
-            if (leftInput[1] == valids3[leftIter+1][1])
+            if (leftInput.toNode == valids3[leftIter+1].toNode)
                 leftIter++;
-            else if (rightInput[0] == valids1[rightIter+1][0])
+            else if (rightInput.fromNode == valids1[rightIter+1].fromNode)
                 rightIter++;
             else {
                 leftIter++;
@@ -180,21 +180,22 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 }
 
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    int (*arr)[3] = (int (*)[3]) database;
+    struct edge db[] = (struct edge *)database;
+    int totNoEdges = sizeof(db)/sizeof(struct edge);
 
-    for (int i = 0; i<(sizeof(arr)/sizeof(arr[0])); i += sizeof(arr[0])) {
-        if (arr[i][0] == fromNodeID && arr[i][1] == toNodeID && arr[i][2] == edgeLabel) {
-            arr[i][0] = -1;
-            arr[i][1] = -1;
-            arr[i][2] = -1;
+    for (int i = 0; i<(totNoEdges); i++) {
+        if (db[i].fromNode == fromNodeID && db[i].toNode == toNodeID && db[i].edgeLabel == edgeLabel) {
+            db[i].fromNode = -1;
+            db[i].toNode = -1;
+            db[i].edgeLabel = -1;
             break; //If we have duplicates remove this
         }
     }
 }
 
 void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
-    int (*arr)[3] = (int (*)[3]) database;
-    free(arr);
+    struct edge db[] = (struct edge *)database;
+    free(db);
 }
 
 typedef void* HashjoinDatabase;
