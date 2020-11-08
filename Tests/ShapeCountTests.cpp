@@ -8,6 +8,16 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
   // using Implementation = SortMergeImplementation;
   TestType const implementation;
   auto* db = implementation.allocateDatabase(32);
+
+  //OUR TESTS:
+  SECTION("Test insert edge") {
+    implementation.insertEdge(db, 0, 1, 2);
+    REQUIRE(implementation.findEdge(db, 0, 1, 2) == 2);
+    REQUIRE(implementation.findEdge(db, 0, 2, 3) == -1);
+  }
+
+  //END OF OUR TESTS
+
   SECTION("Single, self-isomorphic triangle") {
     implementation.insertEdge(db, 0, 1, 0);
     implementation.insertEdge(db, 1, 2, 0);

@@ -11,6 +11,19 @@ struct edge_db {
     int db_len;
 };
 
+int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    struct edge *db = (struct edge *)database;
+
+    int totNoEdges = sizeof(db)/sizeof(struct edge);
+
+    for (int i = 0; i<totNoEdges; i++) {
+        if (db[i].edgeLabel == edgeLabel && db[i].fromNode == fromNodeID && db[i].toNode == toNodeID) {
+            return db[i].edgeLabel;
+        }
+    }
+    return -1;
+}
+
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
     
