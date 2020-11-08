@@ -7,15 +7,17 @@ struct edge {
 };
 
 struct edge_db {
-    int db_len;
+    int length;
     struct edge db[];
 };
 
 
 int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    struct edge *db = (struct edge *)database;
+    struct edge_db *dbstruct = (struct edge_db *) database;
 
-    int totNoEdges = sizeof(db)/sizeof(struct edge);
+    struct edge *db = dbstruct->db;
+
+    int totNoEdges = dbstruct->length;
 
     for (int i = 0; i<totNoEdges; i++) {
         if (db[i].edgeLabel == edgeLabel && db[i].fromNode == fromNodeID && db[i].toNode == toNodeID) {
@@ -28,8 +30,12 @@ int SortMergeJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int to
 
 
 SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd) {
+
+    struct edge_db *dbstruct = malloc (sizeof(*dbstruct) + (sizeof(struct edge) * totalNumberOfEdgesInTheEnd));
     
-    struct edge_db db;
+    struct edge *db = dbstruct->db;
+
+    dbstruct->length = totalNumberOfEdgesInTheEnd;
 
     for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
         db[i].fromNode = -1;
@@ -37,14 +43,17 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
         db[i].edgeLabel = -1;
     }
 
-    return (void*) db;
+    return (void*) dbstruct;
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     printf("InsertEdge called\n");
-    struct edge *db = (struct edge *)database;
+    struct edge_db *dbstruct = (struct edge_db *) database;
 
-    int totNoEdges = sizeof(db)/sizeof(struct edge);
+    struct edge *db = dbstruct->db;
+
+    int totNoEdges = dbstruct->length;
+
     printf("Total Edges: %d \n", sizeof(db));
 
     for (int i = 0; i<totNoEdges; i++) {
