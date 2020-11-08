@@ -41,6 +41,7 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    printf("InsertEdge called");
     struct edge *db = (struct edge *)database;
 
     int totNoEdges = sizeof(db)/sizeof(struct edge);
