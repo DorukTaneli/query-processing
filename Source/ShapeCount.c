@@ -41,17 +41,18 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    printf("InsertEdge called");
+    printf("InsertEdge called\n");
     struct edge *db = (struct edge *)database;
 
     int totNoEdges = sizeof(db)/sizeof(struct edge);
 
     for (int i = 0; i<totNoEdges; i++) {
+        printf("%d\n", db[i].edgeLabel);
         if (db[i].edgeLabel != -1) {
             db[i].fromNode = fromNodeID;
             db[i].toNode = toNodeID;
             db[i].edgeLabel = edgeLabel;
-            printf("Inserted edge: %d ", db[i].edgeLabel);
+            printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
     }
