@@ -244,6 +244,7 @@ void HashjoinDeleteDatabase(HashjoinDatabase database){
 
 typedef void* CompetitionDatabase;
 CompetitionDatabase CompetitionAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd);
+int CompetitionFindEdge(CompetitionDatabase database, int fromNodeID, int toNodeID, int edgeLabel);
 void CompetitionInsertEdge(CompetitionDatabase database, int fromNodeID, int toNodeID,
                            int edgeLabel);
 int CompetitionRunQuery(CompetitionDatabase database, int edgeLabel1, int edgeLabel2,

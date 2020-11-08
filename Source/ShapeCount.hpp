@@ -23,6 +23,7 @@ void HashjoinDeleteDatabase(HashjoinDatabase database);
 
 typedef void* CompetitionDatabase;
 CompetitionDatabase CompetitionAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd);
+int CompetitionFindEdge(CompetitionDatabase database, int fromNodeID, int toNodeID, int edgeLabel);
 void CompetitionInsertEdge(CompetitionDatabase database, int fromNodeID, int toNodeID,
                            int edgeLabel);
 int CompetitionRunQuery(CompetitionDatabase database, int edgeLabel1, int edgeLabel2,
@@ -59,6 +60,8 @@ struct HashjoinImplementation {
 };
 
 struct CompetitionImplementation {
+  std::function<void(void* sVoid, int from, int to, int label)> const findEdge =
+      ::HashjoinFindEdge;
   std::function<void(void* sVoid, int from, int to, int label)> const insertEdge =
       ::HashjoinInsertEdge;
   std::function<void(void* sVoid, int fromNode, int toNode, int label)> const deleteEdge =
