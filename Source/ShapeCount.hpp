@@ -30,6 +30,8 @@ void CompetitionDeleteDatabase(CompetitionDatabase database);
 }
 
 struct SortMergeJoinImplementation {
+  std::function<void(void* sVoid, int from, int to, int label)> const findEdge =
+      ::SortMergeJoinFindEdge;
   std::function<void(void* sVoid, int from, int to, int label)> const insertEdge =
       ::SortMergeJoinInsertEdge;
   std::function<void(void* sVoid, int fromNode, int toNode, int label)> const deleteEdge =
@@ -41,6 +43,8 @@ struct SortMergeJoinImplementation {
 };
 
 struct HashjoinImplementation {
+  std::function<void(void* sVoid, int from, int to, int label)> const findEdge =
+      ::HashjoinFindEdge;
   std::function<void(void* sVoid, int from, int to, int label)> const insertEdge =
       ::HashjoinInsertEdge;
   std::function<void(void* sVoid, int fromNode, int toNode, int label)> const deleteEdge =

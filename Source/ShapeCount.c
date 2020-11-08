@@ -224,6 +224,11 @@ typedef void* HashjoinDatabase;
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
 
 }
+
+int HashJoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    return 0;
+}
+
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
 
 }
