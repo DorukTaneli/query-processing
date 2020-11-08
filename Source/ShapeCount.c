@@ -30,6 +30,7 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
             db[i].fromNode = fromNodeID;
             db[i].toNode = toNodeID;
             db[i].edgeLabel = edgeLabel;
+            printf("Inserted edge: %d ", db[i].edgeLabel);
             break;    
         }
     }
@@ -188,6 +189,7 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
             db[i].fromNode = -1;
             db[i].toNode = -1;
             db[i].edgeLabel = -1;
+            printf("Deleted edge: %d ", db[i].edgeLabel);
             break; //If we have duplicates remove this
         }
     }
