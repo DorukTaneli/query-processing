@@ -211,7 +211,23 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     return count;
     
 }
+void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    struct edge_db *dbstruct = (struct edge_db *) database;
+    struct edge *db = dbstruct->db;
+    int totNoEdges = dbstruct->length;
 
+    for (int i = 0; i<(totNoEdges); i++) {
+        if (db[i].fromNode == fromNodeID && db[i].toNode == toNodeID && db[i].edgeLabel == edgeLabel) {
+            db[i].fromNode = -1;
+            db[i].toNode = -1;
+            db[i].edgeLabel = -1;
+            printf("Deleted edge: %d ", db[i].edgeLabel);
+            break; //If we have duplicates remove this
+        }
+    }
+}
+
+/*
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     struct edge *db = (struct edge *)database;
     int totNoEdges = sizeof(db)/sizeof(struct edge);
@@ -226,6 +242,8 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
         }
     }
 }
+
+*/
 
 void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
     struct edge *db = (struct edge *)database;
