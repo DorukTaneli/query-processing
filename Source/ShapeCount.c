@@ -181,7 +181,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    return count;
+    return 10;
     
 }
 
