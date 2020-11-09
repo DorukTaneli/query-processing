@@ -379,9 +379,17 @@ typedef void* HashjoinDatabase;
 
 int hashattribute = 2;
 
-int myHash(struct edge e, int totalNumberOfEdgesInTheEnd) {
-    return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % totalNumberOfEdgesInTheEnd*hashattribute;
+int myHash(struct edge e, int hashTableSize) {
+    return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % hashTableSize;
 }
+int toHash(int toNode, int hashTableSize) {
+    return (toNode*7) % hashTableSize;
+}
+int fromHash(int fromNode, int hashTableSize) {
+    return (fromNode*5) % hashTableSize;
+}
+
+
 
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
     struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * (totalNumberOfEdgesInTheEnd*hashattribute)));
@@ -444,7 +452,178 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
         quad++;
     }
 }
+
+
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
+    //printf("_____FUNCTION START_______ \n");
+    struct edge_db *dbstruct = (struct edge_db *) database;
+    struct edge *db = dbstruct->db;
+    int hashTableSize = dbstruct->length;
+    //printf("Run query called \n");
+
+    struct edge edge1matches[hashTableSize]; //TO
+    struct edge edge2matches[hashTableSize]; //FROM
+    struct edge edge3matches[hashTableSize]; //FROM
+
+    //printf("Edge match arrays init complete\n");
+
+    for (int i = 0; i<hashTableSize; i++) {
+        edge1matches[i].fromNode = -1;
+        edge1matches[i].toNode = -1;
+        edge1matches[i].edgeLabel = -1;
+
+        edge2matches[i].fromNode = -1;
+        edge2matches[i].toNode = -1;
+        edge2matches[i].edgeLabel = -1;
+
+        edge3matches[i].fromNode = -1;
+        edge3matches[i].toNode = -1;
+        edge3matches[i].edgeLabel = -1;
+    }
+
+    for (int i = 0; i<hashTableSize; i++) {
+        if (db[i].edgeLabel == edgeLabel1) {
+            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel1};
+            int hashValue = toHash(buildInput, hashTableSize);
+
+            int quad = 1;
+            while (1) {
+                if (edge1matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
+                    edge1matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    break;    
+                }
+                quad++;
+            }
+        }
+    }
+
+    for (int i = 0; i<hashTableSize; i++) {
+        if (db[i].edgeLabel == edgeLabel2) {
+            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel2};
+            int hashValue = fromHash(buildInput, hashTableSize);
+
+            int quad = 1;
+            while (1) {
+                if (edge2matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
+                    edge2matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    break;    
+                }
+                quad++;
+            }
+        }
+    }
+
+    for (int i = 0; i<hashTableSize; i++) {
+        if (db[i].edgeLabel == edgeLabel3) {
+            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel3};
+            int hashValue = fromHash(buildInput, hashTableSize);
+
+            int quad = 1;
+            while (1) {
+                if (edge3matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
+                    edge3matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    break;    
+                }
+                quad++;
+            }
+        }
+    }
+
+    /*
+    printf("Edge1matches: \n ");
+    for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
+        if (edge1matches[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
+    }
+
+    printf("Edge2matches: \n ");
+    for(int i=0; i< sizeof(edge2matches)/sizeof(edge2matches[0]); i++){
+        if (edge2matches[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", edge2matches[i].fromNode, edge2matches[i].toNode, edge2matches[i].edgeLabel);
+    }
+
+    printf("Edge3matches: \n ");
+    for(int i=0; i< sizeof(edge3matches)/sizeof(edge3matches[0]); i++){
+        if (edge3matches[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
+    }
+    */
+
+    //printf("Arrays filled \n");
+
+    // edges1 toNode = edges2 fromNode
+
+    struct edge valids1[hashTableSize]; //FROM
+    struct edge valids2[hashTableSize]; //TO
+
+    for(int i=0; i<hashTableSize; i++) {
+        valids1[i].fromNode = -1;
+        valids1[i].toNode = -1;
+        valids1[i].edgeLabel = -1;
+
+        valids2[i].fromNode = -1;
+        valids2[i].toNode = -1;
+        valids2[i].edgeLabel = -1;
+    }
+
+    int quad = 1;
+    while (1) {
+        //if (db[(fromHash() WE ARE HEEEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+        if (quad > hashTableSize) {
+            return -1;
+        }
+
+        quad++;
+    }
+
+
+
+
+
+    int validIter = 0;
+    while(leftIter < totNoEdges && rightIter < totNoEdges) {
+        struct edge leftInput = edge1matches[leftIter];
+        struct edge rightInput = edge2matches[rightIter];
+        if(leftInput.toNode == -1){
+            leftIter++;
+            //printf("Skipped: %d, %d, %d \n", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
+            }
+        else if(rightInput.fromNode == -1)
+            rightIter++;
+        else if(leftInput.toNode < rightInput.fromNode)
+            leftIter++;
+        else if(rightInput.fromNode < leftInput.toNode)
+            rightIter++;
+        else {
+            //Write to output
+            //printf("Edge 1: %d, %d, %d \n", edge1matches[leftIter].fromNode, edge1matches[leftIter].toNode, edge1matches[leftIter].edgeLabel);
+            //printf("Edge 2: %d, %d, %d \n",edge2matches[leftIter].fromNode, edge2matches[leftIter].toNode, edge2matches[leftIter].edgeLabel);
+            valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
+            valids1[validIter].toNode = edge1matches[leftIter].toNode;
+            valids1[validIter].edgeLabel = edge1matches[leftIter].edgeLabel;
+
+            valids2[validIter].fromNode = edge2matches[leftIter].fromNode;
+            valids2[validIter].toNode = edge2matches[leftIter].toNode;
+            valids2[validIter].edgeLabel = edge2matches[leftIter].edgeLabel;
+            validIter++;
+            
+            //Check for non-uniqueness
+            if (leftInput.toNode == edge1matches[leftIter+1].toNode)
+                leftIter++;
+            else if (rightInput.fromNode == edge2matches[rightIter+1].fromNode)
+                rightIter++;
+            else {
+                leftIter++;
+                rightIter++;
+            }
+        }
+    }
+
+
     return 5;
 }
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
