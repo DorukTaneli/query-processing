@@ -1,3 +1,5 @@
+#include <limits.h>
+
 typedef void* SortMergeJoinDatabase;
 
 struct edge {
@@ -95,7 +97,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             edge1matches[i].fromNode = db[i].fromNode;
             edge1matches[i].toNode = db[i].toNode;
             edge1matches[i].edgeLabel = db[i].edgeLabel;
-        } else {
+        } 
+        if (db[i].edgeLabel != edgeLabel1) {
             edge1matches[i].fromNode = -1;
             edge1matches[i].toNode = -1;
             edge1matches[i].edgeLabel = -1;
@@ -105,7 +108,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             edge2matches[i].fromNode = db[i].fromNode;
             edge2matches[i].toNode = db[i].toNode;
             edge2matches[i].edgeLabel = db[i].edgeLabel;
-        } else {
+        } 
+        if (db[i].edgeLabel != edgeLabel2) {
             edge2matches[i].fromNode = -1;
             edge2matches[i].toNode = -1;
             edge2matches[i].edgeLabel = -1;
@@ -115,7 +119,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             edge3matches[i].fromNode = db[i].fromNode;
             edge3matches[i].toNode = db[i].toNode;
             edge3matches[i].edgeLabel = db[i].edgeLabel;
-        } else {
+        } 
+        if (db[i].edgeLabel != edgeLabel3) {
             edge3matches[i].fromNode = -1;
             edge3matches[i].toNode = -1;
             edge3matches[i].edgeLabel = -1;
