@@ -69,12 +69,12 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
 }
 
 int comparatorForTo (const void * a, const void * b) {
-    printf("Comparator called TO \n");
+    //printf("Comparator called TO \n");
     return ((struct edge *)a)->toNode - ((struct edge *)b)->toNode;
 }
 
 int comparatorForFrom (const void * a, const void * b) {
-    printf("Comparator called FROM \n");
+    //printf("Comparator called FROM \n");
     return ((struct edge *)a)->fromNode - ((struct edge *)b)->fromNode;
 }
 
