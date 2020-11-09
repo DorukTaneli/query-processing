@@ -177,7 +177,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         struct edge rightInput = edge2matches[rightIter];
         if(leftInput.toNode == -1){
             leftIter++;
-            printf("Skipped: %d, %d, %d", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
+            printf("Skipped: %d, %d, %d \n", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
             }
         else if(rightInput.fromNode == -1)
             rightIter++;
