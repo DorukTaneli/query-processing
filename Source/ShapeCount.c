@@ -152,12 +152,12 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    prinft("First join completed \n");
+    printf("First join completed \n");
     // edges2 toNode = edges3 fromNode
     qsort(valids2, sizeof(valids2), sizeof(struct edge), comparatorForTo);
     qsort(edge3matches, sizeof(edge3matches), sizeof(struct edge), comparatorForFrom);
 
-    prinft("QSORT 2 Completed \n");
+    printf("QSORT 2 Completed \n");
 
     leftIter = 0;
     rightIter = 0;
@@ -189,13 +189,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    prinft("Second join completed \n");
+    printf("Second join completed \n");
 
     // edges3 toNode = edges1 fromNode
     qsort(valids3, sizeof(valids3), sizeof(struct edge), comparatorForTo);
     qsort(valids1, sizeof(valids1), sizeof(struct edge), comparatorForFrom);
 
-    prinft("QSORT 3 completed \n");
+    printf("QSORT 3 completed \n");
 
     leftIter = 0;
     rightIter = 0;
