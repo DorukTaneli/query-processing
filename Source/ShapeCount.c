@@ -47,14 +47,14 @@ SortMergeJoinDatabase SortMergeJoinAllocateDatabase(unsigned long totalNumberOfE
 }
 
 void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    printf("InsertEdge called\n");
+    //printf("InsertEdge called\n");
     struct edge_db *dbstruct = (struct edge_db *) database;
 
     struct edge *db = dbstruct->db;
 
     int totNoEdges = dbstruct->length;
 
-    printf("Total Edges: %d -- %d \n", sizeof(db), dbstruct->length);
+    //printf("Total Edges: %d -- %d \n", sizeof(db), dbstruct->length);
 
     for (int i = 0; i<totNoEdges; i++) {
         //printf("%d\n", db[i].edgeLabel);
@@ -62,17 +62,19 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
             db[i].fromNode = fromNodeID;
             db[i].toNode = toNodeID;
             db[i].edgeLabel = edgeLabel;
-            printf("Inserted edge: %d \n", db[i].edgeLabel);
+            //printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
     }
 }
 
 int comparatorForTo (const void * a, const void * b) {
+    printf("Comparator called TO \n");
     return ((struct edge *)a)->toNode - ((struct edge *)b)->toNode;
 }
 
 int comparatorForFrom (const void * a, const void * b) {
+    printf("Comparator called FROM \n");
     return ((struct edge *)a)->fromNode - ((struct edge *)b)->fromNode;
 }
 
@@ -233,7 +235,7 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
 
     for (int i = 0; i<(totNoEdges); i++) {
         if (db[i].fromNode == fromNodeID && db[i].toNode == toNodeID && db[i].edgeLabel == edgeLabel) {
-            printf("Deleted edge: %d \n", db[i].edgeLabel);
+            //printf("Deleted edge: %d \n", db[i].edgeLabel);
             db[i].fromNode = -1;
             db[i].toNode = -1;
             db[i].edgeLabel = -1;
