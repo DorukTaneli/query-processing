@@ -170,15 +170,14 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     while(leftIter < totNoEdges && rightIter < totNoEdges) {
         struct edge leftInput = edge1matches[leftIter];
         struct edge rightInput = edge2matches[rightIter];
+        if(leftInput.edgeLabel == -1)
+            leftIter++;
+        if(rightInput.edgeLabel == -1)
+            rightIter++;
         if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
-        else if (rightInput.fromNode == -1 || leftInput.fromNode == -1) {
-            leftIter++;
-            rightIter++;
-        }
-
         else {
             //Write to output
             valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
@@ -235,14 +234,14 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
         struct edge leftInput = valids2[leftIter];
         struct edge rightInput = edge3matches[rightIter];
+        if(leftInput.edgeLabel == -1)
+            leftIter++;
+        if(rightInput.edgeLabel == -1)
+            rightIter++;
         if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
-        else if (rightInput.fromNode == -1 || leftInput.fromNode == -1) {
-            leftIter++;
-            rightIter++;
-        }
         else {
             //Write to output
             valids3[validIter].fromNode = edge3matches[rightIter].fromNode;
@@ -282,15 +281,14 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
         struct edge leftInput = valids3[leftIter];
         struct edge rightInput = valids1[rightIter];
+        if(leftInput.edgeLabel == -1)
+            leftIter++;
+        if(rightInput.edgeLabel == -1)
+            rightIter++;
         if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
-        else if (rightInput.fromNode == -1 || leftInput.fromNode == -1) {
-            leftIter++;
-            rightIter++;
-        }
-
         else {
             //Write to output
             count++;
