@@ -69,12 +69,12 @@ void SortMergeJoinInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int
 }
 
 int comparatorForTo (const void * a, const void * b) {
-    printf("Comparator called TO \n");
+    //printf("Comparator called TO \n");
     return ((struct edge *)a)->toNode - ((struct edge *)b)->toNode;
 }
 
 int comparatorForFrom (const void * a, const void * b) {
-    printf("Comparator called FROM \n");
+    //printf("Comparator called FROM \n");
     return ((struct edge *)a)->fromNode - ((struct edge *)b)->fromNode;
 }
 
@@ -118,8 +118,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
-    qsort(edge1matches, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
-    qsort(edge2matches, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
+    qsort(edge1matches, (sizeof(edge1matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
+    qsort(edge2matches, (sizeof(edge2matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
     printf("QSORT Completed \n");
 
@@ -160,8 +160,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     printf("First join completed \n");
     // edges2 toNode = edges3 fromNode
-    qsort(valids2, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
-    qsort(edge3matches, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
+    qsort(valids2, (sizeof(valids2)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
+    qsort(edge3matches, (sizeof(edge3matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
     printf("QSORT 2 Completed \n");
 
@@ -198,8 +198,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     printf("Second join completed \n");
 
     // edges3 toNode = edges1 fromNode
-    qsort(valids3, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
-    qsort(valids1, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
+    qsort(valids3, (sizeof(valids3)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
+    qsort(valids1, (sizeof(valids1)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
     printf("QSORT 3 completed \n");
 
