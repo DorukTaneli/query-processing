@@ -271,11 +271,17 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    int final_count = 0;
+
     printf("valids3: \n ");
     for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
-        if (valids3[i].edgeLabel != -1)
+        if (valids3[i].edgeLabel != -1){
             printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
+            final_count++;
+        }
     }
+
+    return final_count;
 
     //printf("Second join completed \n");
 
