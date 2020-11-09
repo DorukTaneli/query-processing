@@ -122,9 +122,22 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    printf("Edge1matches: \n ");
     for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
         if (edge1matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
+            printf("Edge1matches: \n For: %d, To: %d, Label: %d", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
+    }
+
+    printf("Edge2matches: \n ");
+    for(int i=0; i< sizeof(edge2matches)/sizeof(edge2matches[0]); i++){
+        if (edge2matches[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d", edge2matches[i].fromNode, edge2matches[i].toNode, edge2matches[i].edgeLabel);
+    }
+
+    printf("Edge3matches: \n ");
+    for(int i=0; i< sizeof(edge3matches)/sizeof(edge3matches[0]); i++){
+        if (edge3matches[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
     }
 
     printf("Arrays filled \n");
