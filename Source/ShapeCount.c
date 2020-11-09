@@ -379,7 +379,7 @@ typedef void* HashjoinDatabase;
 
 #define hashattribute 2;
 
-int hash(struct edge e, int totalNumberOfEdgesInTheEnd) {
+int myHash(struct edge e, int totalNumberOfEdgesInTheEnd) {
     return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % totalNumberOfEdgesInTheEnd*hashattribute;
 }
 
@@ -405,7 +405,7 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
     int totNoEdges = dbstruct->length;
 
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = hash(probeInput, totNoEdges);
+    int hashValue = myHash(probeInput, totNoEdges);
 
     int quad = 1;
     while (1) {
@@ -429,7 +429,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
     int totNoEdges = dbstruct->length;
 
     struct edge buildInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = hash(buildInput, totNoEdges);
+    int hashValue = myHash(buildInput, totNoEdges);
 
     int quad = 1;
     while (1) {
@@ -450,7 +450,7 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
     int totNoEdges = dbstruct->length;
 
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = hash(probeInput, totNoEdges);
+    int hashValue = myHash(probeInput, totNoEdges);
 
     int quad = 1;
     while (1) {
