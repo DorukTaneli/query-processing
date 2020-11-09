@@ -172,9 +172,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         struct edge rightInput = edge2matches[rightIter];
         if(leftInput.edgeLabel == -1)
             leftIter++;
-        if(rightInput.edgeLabel == -1)
+        else if(rightInput.edgeLabel == -1)
             rightIter++;
-        if(leftInput.toNode < rightInput.fromNode)
+        else if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
@@ -238,9 +238,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         struct edge rightInput = edge3matches[rightIter];
         if(leftInput.edgeLabel == -1)
             leftIter++;
-        if(rightInput.edgeLabel == -1)
+        else if(rightInput.edgeLabel == -1)
             rightIter++;
-        if(leftInput.toNode < rightInput.fromNode)
+        else if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
@@ -285,9 +285,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         struct edge rightInput = valids1[rightIter];
         if(leftInput.edgeLabel == -1)
             leftIter++;
-        if(rightInput.edgeLabel == -1)
+        else if(rightInput.edgeLabel == -1)
             rightIter++;
-        if(leftInput.toNode < rightInput.fromNode)
+        else if(leftInput.toNode < rightInput.fromNode)
             leftIter++;
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
