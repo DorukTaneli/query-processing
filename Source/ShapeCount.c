@@ -377,18 +377,18 @@ void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
 
 typedef void* HashjoinDatabase;
 
-#define hashattribute 2;
+int hashattribute = 2;
 
 int myHash(struct edge e, int totalNumberOfEdgesInTheEnd) {
     return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % totalNumberOfEdgesInTheEnd*hashattribute;
 }
 
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
-    struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * totalNumberOfEdgesInTheEnd));
+    struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * (totalNumberOfEdgesInTheEnd*hashattribute)));
     
     struct edge *db = dbstruct->db;
 
-    dbstruct->length = totalNumberOfEdgesInTheEnd;
+    dbstruct->length = totalNumberOfEdgesInTheEnd*hashattribute;
 
     for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
         db[i].fromNode = -1;
@@ -402,22 +402,25 @@ HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheE
 int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
-    int totNoEdges = dbstruct->length;
+    int hashTableSize = dbstruct->length;
 
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = myHash(probeInput, totNoEdges);
+    int hashValue = myHash(probeInput, hashTableSize);
 
     int quad = 1;
     while (1) {
-        if (db[(hashValue + quad)%totNoEdges].fromNode == probeInput.fromNode &&
-            db[(hashValue + quad)%totNoEdges].toNode == probeInput.toNode &&
-            db[(hashValue + quad)%totNoEdges].edgeLabel == probeInput.edgeLabel) {
+        if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
+            db[(hashValue + quad)%hashTableSize].toNode == probeInput.toNode &&
+            db[(hashValue + quad)%hashTableSize].edgeLabel == probeInput.edgeLabel) {
                 return probeInput.edgeLabel;  
         }
+
+        if (quad > hashTableSize) {
+            return -1;
+        }
+
         quad *= 2;
     }
-
-    return 0;
 }
 
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
@@ -426,15 +429,15 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 
     struct edge *db = dbstruct->db;
 
-    int totNoEdges = dbstruct->length;
+    int hashTableSize = dbstruct->length;
 
     struct edge buildInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = myHash(buildInput, totNoEdges);
+    int hashValue = myHash(buildInput, hashTableSize);
 
     int quad = 1;
     while (1) {
-        if (db[(hashValue + quad)%totNoEdges].edgeLabel == -1) {
-            db[(hashValue + quad)%totNoEdges] = buildInput;
+        if (db[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
+            db[(hashValue + quad)%hashTableSize] = buildInput;
             //printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
@@ -447,21 +450,26 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
-    int totNoEdges = dbstruct->length;
+    int hashTableSize = dbstruct->length;
 
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
-    int hashValue = myHash(probeInput, totNoEdges);
+    int hashValue = myHash(probeInput, hashTableSize);
 
     int quad = 1;
     while (1) {
-        if (db[(hashValue + quad)%totNoEdges].fromNode == probeInput.fromNode &&
-            db[(hashValue + quad)%totNoEdges].toNode == probeInput.toNode &&
-            db[(hashValue + quad)%totNoEdges].edgeLabel == probeInput.edgeLabel) {
-                db[(hashValue + quad)%totNoEdges].fromNode = -1;
-                db[(hashValue + quad)%totNoEdges].toNode = -1;
-                db[(hashValue + quad)%totNoEdges].edgeLabel = -1;
+        if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
+            db[(hashValue + quad)%hashTableSize].toNode == probeInput.toNode &&
+            db[(hashValue + quad)%hashTableSize].edgeLabel == probeInput.edgeLabel) {
+                db[(hashValue + quad)%hashTableSize].fromNode = -1;
+                db[(hashValue + quad)%hashTableSize].toNode = -1;
+                db[(hashValue + quad)%hashTableSize].edgeLabel = -1;
                 break;
         }
+
+        if (quad > hashTableSize) {
+            return -1;
+        }
+
         quad *= 2;
     }
 }
