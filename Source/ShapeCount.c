@@ -314,11 +314,12 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+/*
     if (count > 0) {
         printf("HERE count= %d",count);
         return (count + 1)/2;
     }
-
+*/
 
 
     return count;
