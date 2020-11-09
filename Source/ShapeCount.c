@@ -315,7 +315,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     if (count > 0) {
-        return (count * 2) -1;
+        return (count + 1)/2;
     }
 
 
