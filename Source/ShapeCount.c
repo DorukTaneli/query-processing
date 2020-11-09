@@ -177,7 +177,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         struct edge rightInput = edge2matches[rightIter];
         if(leftInput.toNode == -1){
             leftIter++;
-            printf("Skipped: %d, %d, %d \n", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
+            //printf("Skipped: %d, %d, %d \n", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
             }
         else if(rightInput.fromNode == -1)
             rightIter++;
@@ -187,8 +187,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             rightIter++;
         else {
             //Write to output
-            printf("Edge 1: %d, %d, %d \n", edge1matches[leftIter].fromNode, edge1matches[leftIter].toNode, edge1matches[leftIter].edgeLabel);
-            printf("Edge 2: %d, %d, %d \n",edge2matches[leftIter].fromNode, edge2matches[leftIter].toNode, edge2matches[leftIter].edgeLabel);
+            //printf("Edge 1: %d, %d, %d \n", edge1matches[leftIter].fromNode, edge1matches[leftIter].toNode, edge1matches[leftIter].edgeLabel);
+            //printf("Edge 2: %d, %d, %d \n",edge2matches[leftIter].fromNode, edge2matches[leftIter].toNode, edge2matches[leftIter].edgeLabel);
             valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
             valids1[validIter].toNode = edge1matches[leftIter].toNode;
             valids1[validIter].edgeLabel = edge1matches[leftIter].edgeLabel;
