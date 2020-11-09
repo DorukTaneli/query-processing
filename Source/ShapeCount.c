@@ -372,23 +372,97 @@ void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
     free(db);
 }
 
-typedef void* HashjoinDatabase;
-HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
 
+
+
+typedef void* HashjoinDatabase;
+
+#define hashattribute 2;
+
+int hash(struct edge e, int totalNumberOfEdgesInTheEnd) {
+    return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % totalNumberOfEdgesInTheEnd*hashattribute;
+}
+
+HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
+    struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * totalNumberOfEdgesInTheEnd));
+    
+    struct edge *db = dbstruct->db;
+
+    dbstruct->length = totalNumberOfEdgesInTheEnd;
+
+    for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
+        db[i].fromNode = -1;
+        db[i].toNode = -1;
+        db[i].edgeLabel = -1;
+    }
+
+    return (void*) dbstruct;
 }
 
 int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    struct edge_db *dbstruct = (struct edge_db *) database;
+    struct edge *db = dbstruct->db;
+    int totNoEdges = dbstruct->length;
+
+    struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
+    int hashValue = hash(probeInput, totNoEdges);
+
+    int quad = 1;
+    while (1) {
+        if (db[(hashValue + quad)%totNoEdges].fromNode == probeInput.fromNode &&
+            db[(hashValue + quad)%totNoEdges].toNode == probeInput.toNode &&
+            db[(hashValue + quad)%totNoEdges].edgeLabel == probeInput.edgeLabel) {
+                return probeInput.edgeLabel;  
+        }
+        quad *= 2;
+    }
+
     return 0;
 }
 
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
+    //printf("InsertEdge called\n");
+    struct edge_db *dbstruct = (struct edge_db *) database;
 
+    struct edge *db = dbstruct->db;
+
+    int totNoEdges = dbstruct->length;
+
+    struct edge buildInput = {fromNodeID, toNodeID, edgeLabel};
+    int hashValue = hash(buildInput, totNoEdges);
+
+    int quad = 1;
+    while (1) {
+        if (db[(hashValue + quad)%totNoEdges].edgeLabel == -1) {
+            db[(hashValue + quad)%totNoEdges] = buildInput;
+            //printf("Inserted edge: %d \n", db[i].edgeLabel);
+            break;    
+        }
+        quad *= 2;
+    }
 }
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
     return 5;
 }
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
+    struct edge_db *dbstruct = (struct edge_db *) database;
+    struct edge *db = dbstruct->db;
+    int totNoEdges = dbstruct->length;
 
+    struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
+    int hashValue = hash(probeInput, totNoEdges);
+
+    int quad = 1;
+    while (1) {
+        if (db[(hashValue + quad)%totNoEdges].fromNode == probeInput.fromNode &&
+            db[(hashValue + quad)%totNoEdges].toNode == probeInput.toNode &&
+            db[(hashValue + quad)%totNoEdges].edgeLabel == probeInput.edgeLabel) {
+                db[(hashValue + quad)%totNoEdges].fromNode = -1;
+                db[(hashValue + quad)%totNoEdges].toNode = -1;
+                db[(hashValue + quad)%totNoEdges].edgeLabel = -1;  
+        }
+        quad *= 2;
+    }
 }
 void HashjoinDeleteDatabase(HashjoinDatabase database){
 
