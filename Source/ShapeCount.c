@@ -112,8 +112,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
-    qsort(edge1matches, totNoEdges*(sizeof(struct edge)), sizeof(struct edge), comparatorForTo);
-    qsort(edge2matches, totNoEdges*(sizeof(struct edge)), sizeof(struct edge), comparatorForFrom);
+    qsort(edge1matches, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), comparatorForTo);
+    qsort(edge2matches, totNoEdges*(sizeof(struct edge *)), sizeof(struct edge *), comparatorForFrom);
 
     printf("QSORT Completed \n");
 
