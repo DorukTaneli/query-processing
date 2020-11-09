@@ -80,10 +80,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int totNoEdges = dbstruct->length;
+    printf("Run query called \n");
 
     struct edge edge1matches[totNoEdges];
     struct edge edge2matches[totNoEdges];
     struct edge edge3matches[totNoEdges];
+
+    printf("Edge match arrays init complete\n");
 
     for (int i = 0; i<totNoEdges; i++) {
         if(db[i].edgeLabel == edgeLabel1) {
@@ -104,6 +107,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
             edge3matches[i].edgeLabel = db[i].edgeLabel;
         }
     }
+
+    printf("Arrays filled \n");
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
