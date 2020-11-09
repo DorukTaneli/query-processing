@@ -466,8 +466,9 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
                 break;
         }
 
+        //If edge is not in hashTable
         if (quad > hashTableSize) {
-            return -1;
+            break;
         }
 
         quad *= 2;
