@@ -81,7 +81,7 @@ int comparatorForFrom (const void * a, const void * b) {
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
-    printf("_____FUNCTION START_______ \n");
+    //printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int totNoEdges = dbstruct->length;
@@ -211,17 +211,21 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    printf("valids1: \n ");
+/*
+    //printf("valids1: \n ");
     for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
         if (valids1[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", valids1[i].fromNode, valids1[i].toNode, valids1[i].edgeLabel);
+            //printf("For: %d, To: %d, Label: %d \n", valids1[i].fromNode, valids1[i].toNode, valids1[i].edgeLabel);
     }
+    */
 
-    printf("valids2: \n ");
+    /* printf("valids2: \n ");
     for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
         if (valids2[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", valids2[i].fromNode, valids2[i].toNode, valids2[i].edgeLabel);
+            //printf("For: %d, To: %d, Label: %d \n", valids2[i].fromNode, valids2[i].toNode, valids2[i].edgeLabel);
     }
+
+    */
 
     //printf("First join completed \n");
     // edges2 toNode = edges3 fromNode
@@ -273,10 +277,10 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     int final_count = 0;
 
-    printf("valids3: \n ");
+    //printf("valids3: \n ");
     for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
         if (valids3[i].edgeLabel != -1){
-            printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
+            //printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
             final_count++;
         }
     }
