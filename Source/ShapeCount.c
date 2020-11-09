@@ -419,7 +419,7 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
             return -1;
         }
 
-        quad *= 2;
+        quad++;
     }
 }
 
@@ -441,7 +441,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
             //printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
-        quad *= 2;
+        quad++;
     }
 }
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
@@ -471,7 +471,7 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
             break;
         }
 
-        quad *= 2;
+        quad++;
     }
 }
 void HashjoinDeleteDatabase(HashjoinDatabase database){
