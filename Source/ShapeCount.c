@@ -82,13 +82,13 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int totNoEdges = dbstruct->length;
-    printf("Run query called \n");
+    //printf("Run query called \n");
 
     struct edge edge1matches[totNoEdges];
     struct edge edge2matches[totNoEdges];
     struct edge edge3matches[totNoEdges];
 
-    printf("Edge match arrays init complete\n");
+    //printf("Edge match arrays init complete\n");
 
     for (int i = 0; i<totNoEdges; i++) {
         if(db[i].edgeLabel == edgeLabel1) {
@@ -122,6 +122,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    /*
     printf("Edge1matches: \n ");
     for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
         if (edge1matches[i].edgeLabel != -1)
@@ -139,20 +140,32 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         if (edge3matches[i].edgeLabel != -1)
             printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
     }
+    */
 
-    printf("Arrays filled \n");
+    //printf("Arrays filled \n");
 
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
     qsort(edge1matches, (sizeof(edge1matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
     qsort(edge2matches, (sizeof(edge2matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
-    printf("QSORT Completed \n");
+    //printf("QSORT Completed \n");
 
     int leftIter = 0;
     int rightIter = 0;
     struct edge valids1[totNoEdges];
     struct edge valids2[totNoEdges];
+
+    for(int i=0; i<totNoEdges; i++) {
+        valids1[i].fromNode = -1;
+        valids1[i].toNode = -1;
+        valids1[i].edgeLabel = -1;
+
+        valids2[i].fromNode = -1;
+        valids2[i].toNode = -1;
+        valids2[i].edgeLabel = -1;
+    }
+
     int validIter = 0;
     while(leftIter < totNoEdges && rightIter < totNoEdges) {
         struct edge leftInput = edge1matches[leftIter];
@@ -184,16 +197,35 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    printf("First join completed \n");
+    printf("valids1: \n ");
+    for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
+        if (valids1[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", valids1[i].fromNode, valids1[i].toNode, valids1[i].edgeLabel);
+    }
+
+    printf("valids2: \n ");
+    for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
+        if (valids2[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", valids2[i].fromNode, valids2[i].toNode, valids2[i].edgeLabel);
+    }
+
+    //printf("First join completed \n");
     // edges2 toNode = edges3 fromNode
     qsort(valids2, (sizeof(valids2)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
     qsort(edge3matches, (sizeof(edge3matches)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
-    printf("QSORT 2 Completed \n");
+    //printf("QSORT 2 Completed \n");
 
     leftIter = 0;
     rightIter = 0;
     struct edge valids3[totNoEdges];
+
+    for(int i=0; i<totNoEdges; i++) {
+        valids3[i].fromNode = -1;
+        valids3[i].toNode = -1;
+        valids3[i].edgeLabel = -1;
+    }
+
     validIter = 0;
     while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
         struct edge leftInput = valids2[leftIter];
@@ -221,13 +253,19 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    printf("Second join completed \n");
+    printf("valids3: \n ");
+    for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
+        if (valids3[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
+    }
+
+    //printf("Second join completed \n");
 
     // edges3 toNode = edges1 fromNode
     qsort(valids3, (sizeof(valids3)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForTo);
     qsort(valids1, (sizeof(valids1)/sizeof(struct edge *)), sizeof(struct edge *), &comparatorForFrom);
 
-    printf("QSORT 3 completed \n");
+    //printf("QSORT 3 completed \n");
 
     leftIter = 0;
     rightIter = 0;
