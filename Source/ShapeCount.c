@@ -81,6 +81,7 @@ int comparatorForFrom (const void * a, const void * b) {
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
+    printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int totNoEdges = dbstruct->length;
