@@ -459,7 +459,8 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
             db[(hashValue + quad)%totNoEdges].edgeLabel == probeInput.edgeLabel) {
                 db[(hashValue + quad)%totNoEdges].fromNode = -1;
                 db[(hashValue + quad)%totNoEdges].toNode = -1;
-                db[(hashValue + quad)%totNoEdges].edgeLabel = -1;  
+                db[(hashValue + quad)%totNoEdges].edgeLabel = -1;
+                break;
         }
         quad *= 2;
     }
