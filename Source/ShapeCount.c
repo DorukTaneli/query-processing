@@ -110,6 +110,10 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]; i++)){
+        printf("For: %d, To: %d, Label: %d", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
+    }
+
     printf("Arrays filled \n");
 
     // The sort merge joins we need to run
