@@ -77,9 +77,9 @@ int comparatorForFrom (const void * a, const void * b) {
 }
 
 int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
-    struct edge *db = (struct edge *)database;
-
-    int totNoEdges = sizeof(db)/sizeof(struct edge);
+    struct edge_db *dbstruct = (struct edge_db *) database;
+    struct edge *db = dbstruct->db;
+    int totNoEdges = dbstruct->length;
 
     struct edge edge1matches[totNoEdges];
     struct edge edge2matches[totNoEdges];
