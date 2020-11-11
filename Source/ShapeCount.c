@@ -607,6 +607,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //TESTING 
 
+    /*
+
     printf("Edge1: \n");
     for (int i = 0; i<hashTableSize; i++){
         if (edge1matches[i].edgeLabel != -1) {
@@ -640,6 +642,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids2[i].fromNode,valids2[i].toNode, valids2[i].edgeLabel);
         }
     }
+
+    */
 
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
 
@@ -685,23 +689,49 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             }
         }
     }
-
+    /*
     printf("VALIDS 3: \n");
     for (int i = 0; i<hashTableSize; i++){
         if (valids3[i].edgeLabel != -1) {
             printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
         }
     }
+    */
 
     //Run through valids3
     //If match on valids1 has a triangle with 
-    for (int i = 0; i<hashTableSize;i++){
 
+    int valids1_counter = 0;
+    int valids2_counter = 0;
+    int valids3_counter = 0;
+
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids3[i].edgeLabel != -1) {
+            valids3_counter++;
+        }
     }
 
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids2[i].edgeLabel != -1) {
+            valids2_counter++;
+        }
+    }
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids1[i].edgeLabel != -1) {
+            valids1_counter++;
+        }
+    }
 
+    int final_counts[3] = {valids1_counter, valids2_counter, valids3_counter};
+    int final_count = valids1_counter;
 
-    return 0;
+    for (int i = 0; i<3;i++){
+        if (final_counts[i] >final_count){
+            final_count = final_counts[i];
+        }
+    }
+
+    return final_count;
 
 
 /*
