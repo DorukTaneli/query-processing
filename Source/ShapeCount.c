@@ -398,7 +398,7 @@ HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheE
 
     dbstruct->length = totalNumberOfEdgesInTheEnd*hashattribute;
 
-    for (int i = 0; i < totalNumberOfEdgesInTheEnd; i++) {
+    for (int i = 0; i < totalNumberOfEdgesInTheEnd*hashattribute; i++) {
         db[i].fromNode = -1;
         db[i].toNode = -1;
         db[i].edgeLabel = -1;
