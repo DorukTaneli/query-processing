@@ -618,7 +618,44 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    return 0;
+    //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
+    //increment counter if yes
+    //return counter
+
+    int final_counter = 0;
+
+    for (int i = 0; i<hashTableSize;i++){
+        int valids1_edge3toHash = toHash(edge3matches[i].toNode, hashTableSize);
+        int valids1_edge3_lp = 0;
+        int valids2_edge3fromHash = fromHash(edge3matches[i].fromNode, hashTableSize); 
+        int valids2_edge3_lp = 0;
+        int isMatch1 = 0;
+        int isMatch2 = 0;
+
+        while (valids1_edge3_lp<hashTableSize) {
+            if(valids1[(valids1_edge3toHash+valids1_edge3_lp)%hashTableSize].fromNode == edge3matches[i].toNode){
+                if (edge3matches[i].toNode != -1){
+                    isMatch1 = 1;
+                }
+            }
+            valids1_edge3_lp++;
+        }
+
+        while (valids2_edge3_lp<hashTableSize) {
+            if(valids2[(valids2_edge3fromHash+valids2_edge3_lp)%hashTableSize].toNode == edge3matches[i].fromNode){
+                if (edge3matches[i].toNode != -1){
+                    isMatch2 = 1;
+                }
+            }
+            valids2_edge3_lp++;
+        }
+
+        if ((isMatch1 == 1) and (isMatch2 == 1)){
+            final_counter++;
+        }
+    }
+
+    return final_counter;
 
 
 /*
