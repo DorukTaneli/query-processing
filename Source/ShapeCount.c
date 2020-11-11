@@ -592,6 +592,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].edgeLabel = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].edgeLabel;
                     }
                 }
+
+                break;
             }
         }
     }
