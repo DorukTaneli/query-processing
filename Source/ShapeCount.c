@@ -644,7 +644,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
 
-    int quad = 0;
+    int quad2 = 0;
     for (int iter = 0; iter < hashTableSize; iter++) {
 
         while (1) {
@@ -681,10 +681,10 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 }
             }
 
-            if (quad > hashTableSize) {
+            if (quad2 > hashTableSize) {
                break;
             }
-            quad++;
+            quad2++;
 
         }
     }
