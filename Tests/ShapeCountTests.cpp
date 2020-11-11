@@ -23,6 +23,13 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
 
   }
 
+  SECTION("Test non ending triangle") {
+    implementation.insertEdge(db,0,1,0);
+    implementation.insertEdge(db,1,2,1);
+    implementation.insertEdge(db,2,9,2);
+    REQUIRE(implementation.runQuery(db, 0, 1, 2) == 0);
+  }
+
   //END OF OUR TESTS
 
   SECTION("Single, self-isomorphic triangle") {
