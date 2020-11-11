@@ -619,8 +619,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
-    //increment counter if yes
-    //return counter
 
 
     for (int i = 0; i<hashTableSize;i++){
@@ -671,6 +669,12 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
         }
     }
+
+    for (int i = 0; i<hashTableSize;i++){
+        
+    }
+
+
 
     return 0;
 
