@@ -539,6 +539,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+/*
     printf("DATABASE: \n ");
     for(int i=0; i<hashTableSize; i++){
         if (db[i].edgeLabel != -1)
@@ -565,6 +566,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
     }
     
+*/
 
     //printf("Arrays filled \n");
 
@@ -612,8 +614,9 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
                 int quadValids1 = 1;
                 while (quadValids1 < hashTableSize) {
+                    printf("Got to inserting valids 1");
                     if (valids1[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
-                        valids1[(hashValue + quadValids1)%hashTableSize] = buildInputValids1;
+                        valids1[(hashValueValids1 + quadValids1)%hashTableSize] = buildInputValids1;
                         break;    
                     }
                     quadValids1++;
@@ -624,8 +627,9 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
                 int quadValids2 = 1;
                 while (quadValids2 < hashTableSize) {
+                    printf("Got to inserting valids 2");
                     if (valids2[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
-                        valids2[(hashValue + quadValids2)%hashTableSize] = buildInputValids2;
+                        valids2[(hashValueValids2 + quadValids2)%hashTableSize] = buildInputValids2;
                         break;    
                     }
                     quadValids2++;
@@ -696,7 +700,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int quadValids3 = 1;
                 while (1) {
                     if (valids3[(hashValueValids3 + quadValids3)%hashTableSize].edgeLabel == -1) {
-                        valids3[(hashValue + quadValids3)%hashTableSize] = buildInputValids3;
+                        valids3[(hashValueValids3 + quadValids3)%hashTableSize] = buildInputValids3;
                         break;    
                     }
                     quadValids3++;
