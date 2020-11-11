@@ -539,7 +539,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    /*
+    
     printf("Edge1matches: \n ");
     for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
         if (edge1matches[i].edgeLabel != -1)
@@ -557,7 +557,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         if (edge3matches[i].edgeLabel != -1)
             printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
     }
-    */
+    
 
     //printf("Arrays filled \n");
 
@@ -648,7 +648,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
 
-    // _________
+    // ________
 
     struct edge valids3[hashTableSize];
 
