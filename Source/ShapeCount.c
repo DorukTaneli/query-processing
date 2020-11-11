@@ -539,40 +539,11 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-/*
-    printf("DATABASE: \n ");
-    for(int i=0; i<hashTableSize; i++){
-        if (db[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", db[i].fromNode, db[i].toNode, db[i].edgeLabel);
-    }
-
-    printf("\n \n");
-    
-    printf("Edge1matches: \n ");
-    for(int i=0; i< hashTableSize; i++){
-        if (edge1matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
-    }
-
-    printf("Edge2matches: \n ");
-    for(int i=0; i< hashTableSize; i++){
-        if (edge2matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge2matches[i].fromNode, edge2matches[i].toNode, edge2matches[i].edgeLabel);
-    }
-
-    printf("Edge3matches: \n ");
-    for(int i=0; i< hashTableSize; i++){
-        if (edge3matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
-    }
-    
-*/
-
-    //printf("Arrays filled \n");
 
     // edges1 toNode = edges2 fromNode
     struct edge valids1[hashTableSize]; //FROM
     struct edge valids2[hashTableSize]; //TO
+    struct edge valids3[hashTableSize]; 
 
     for(int i=0; i<hashTableSize; i++) {
         valids1[i].fromNode = -1;
@@ -582,8 +553,22 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         valids2[i].fromNode = -1;
         valids2[i].toNode = -1;
         valids2[i].edgeLabel = -1;
+
+        valids3[i].fromNode = -1;
+        valids3[i].toNode = -1;
+        valids3[i].edgeLabel = -1;      
     }
 
+    //ITERATING OVER EDGE 1 MATCHES
+    for (int iter = 0; iter<hashTableSize; iter++){
+
+        int fromHashEdge2 = fromHash(edge1matches[iter].toNode, hashTableSize);
+        
+
+    }
+
+
+/*
 
     int quad = 0;
     for (int iter = 0; iter < hashTableSize; iter++) {
@@ -726,6 +711,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
     return final_counter;
+
+    */
 
 }
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
