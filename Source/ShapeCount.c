@@ -580,10 +580,10 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     for (int iter = 0; iter < hashTableSize; iter++) {
 
         while (1) {
-            int hashValue = fromHash(edge1matches[iter].toNode, hashTableSize);
+            int hashValue = fromHash(edge1matches[iter].fromNode, hashTableSize);
             int RightFrom;
 
-            int hashValueR = fromHash(edge1matches[iter].toNode, hashTableSize);
+            int hashValueR = toHash(edge1matches[iter].toNode, hashTableSize);
 
             int quadR = 1;
             while (1) {
@@ -633,9 +633,70 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    // _________
+
     struct edge valids3[hashTableSize];
 
-    return 5;
+    for(int i=0; i<hashTableSize; i++) {
+        valids3[i].fromNode = -1;
+        valids3[i].toNode = -1;
+        valids3[i].edgeLabel = -1;
+    }
+
+
+    int quad = 0;
+    for (int iter = 0; iter < hashTableSize; iter++) {
+
+        while (1) {
+            int hashValue = fromHash(edge3matches[iter].fromNode, hashTableSize);
+            int RightFrom;
+
+            int hashValueR = toHash(valids2[iter].toNode, hashTableSize);
+
+            int quadR = 1;
+            while (1) {
+                if (edge3matches[(hashValueR + quadR)%hashTableSize].fromNode == valids2[iter].toNode) {
+                        RightFrom = edge3matches[(hashValueR + quadR)%hashTableSize].fromNode;  
+                }
+
+                if (quadR > hashTableSize) {
+                   break;
+                }
+
+                quadR++;
+            }
+
+            if (valids2[iter].toNode == RightFrom){
+                //Insert to hashTable
+                struct edge buildInputValids3 = {valids2[iter].fromNode, valids2[iter].toNode, valids2[iter].edgeLabel};
+                int hashValueValids3 = fromHash(valids2[iter].fromNode, hashTableSize);
+
+                int quadValids3 = 1;
+                while (1) {
+                    if (valids3[(hashValueValids3 + quadValids3)%hashTableSize].edgeLabel == -1) {
+                        valids3[(hashValue + quadValids3)%hashTableSize] = buildInputValids3;
+                        break;    
+                    }
+                    quadValids3++;
+                }
+            }
+
+            if (quad > hashTableSize) {
+               break;
+            }
+            quad++;
+
+        }
+    }
+    
+    int final_counter = 0;
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids3[i].edgeLabel != -1) {
+            final_counter++;
+        }
+    }
+
+    return final_counter;
 
 }
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
