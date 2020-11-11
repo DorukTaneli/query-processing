@@ -576,9 +576,43 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         valids2[i].edgeLabel = -1;
     }
 
-    int quad = 1;
+    int iter = 0;
+    int quad = 0;
     while (1) {
-        //if (db[(fromHash() WE ARE HEEEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        //if (db[(fromHash() WE ARE HEEEREEEEEEEE
+
+        while (1) {
+
+            if (edge1matches[(iter)%hashTableSize].toNode == edge2matches[(quad)%hashTableSize].fromNode){
+                
+            }
+
+            if (quad2 > hashTableSize) {
+                return -1;
+            }
+            quad2++;
+
+        }
+
+
+
+
+        if (quad > hashTableSize) {
+            return -1;
+        }
+
+        iter++;
+    }
+
+
+/*
+int quad = 1;
+    while (1) {
+        if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
+            db[(hashValue + quad)%hashTableSize].toNode == probeInput.toNode &&
+            db[(hashValue + quad)%hashTableSize].edgeLabel == probeInput.edgeLabel) {
+                return probeInput.edgeLabel;  
+        }
 
         if (quad > hashTableSize) {
             return -1;
@@ -586,7 +620,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
         quad++;
     }
-
+*/
 
 
 
