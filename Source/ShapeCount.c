@@ -563,9 +563,55 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     for (int iter = 0; iter<hashTableSize; iter++){
 
         int fromHashEdge2 = fromHash(edge1matches[iter].toNode, hashTableSize);
-        
+        int linear_proberE2M = 0;
 
+        while (linear_proberE2M<hashTableSize){
+            if(edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode == edge1matches[iter].toNode) {
+                //INSERT INTO VALIDS 1 AND VALIDS 2
+                //valids 1 insert
+                int valids1_toHash = toHash(edge1matches[iter].toNode, hashTableSize);
+                int valids1_linear_prober = 0;
+                while (valids1_linear_prober<hashTableSize){
+                    //IF EMPTY SPOT FOUND INSERT
+                    if (valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel == -1){
+                        valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].fromNode = edge1matches[iter].fromNode;
+                        valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].toNode = edge1matches[iter].toNode;
+                        valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel = edge1matches[iter].edgeLabel;
+                    }
+                }
+
+                //valids 2 insert
+                int valids2_fromHash = fromHash(edge1matches[iter].fromNode, hashTableSize);
+                int valids2_linear_prober = 0;
+
+                while (valids2_linear_prober<hashTableSize){
+                    //IF EMPTY SPOT FOUND INSERT
+                    if (valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].edgeLabel == -1){
+                        valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].fromNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode;
+                        valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].toNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].toNode;
+                        valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].edgeLabel = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].edgeLabel;
+                    }
+                }
+            }
+        }
     }
+
+    //TESTING 
+
+    printf("VALIDS 1: \n");
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids1[i].edgeLabel != -1) {
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids1[i].fromNode,valids1[i].toNode, valids1[i].edgeLabel);
+        }
+    }
+    printf("VALIDS 2: \n");
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids2[i].edgeLabel != -1) {
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids2[i].fromNode,valids2[i].toNode, valids2[i].edgeLabel);
+        }
+    }
+
+    return 0;
 
 
 /*
