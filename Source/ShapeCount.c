@@ -592,7 +592,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             int hashValue = fromHash(edge1matches[iter].fromNode, hashTableSize);
             int RightFrom;
 
-            int hashValueR = toHash(edge1matches[iter].toNode, hashTableSize);
+            int hashValueR = toHash(edge2matches[iter].toNode, hashTableSize);
 
             int quadR = 1;
             while (quadR < hashTableSize) {
