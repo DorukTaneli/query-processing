@@ -539,21 +539,28 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    printf("DATABASE: \n ");
+    for(int i=0; i<hashTableSize; i++){
+        if (db[i].edgeLabel != -1)
+            printf("For: %d, To: %d, Label: %d \n", db[i].fromNode, db[i].toNode, db[i].edgeLabel);
+    }
+
+    printf("\n \n");
     
     printf("Edge1matches: \n ");
-    for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
+    for(int i=0; i< hashTableSize; i++){
         if (edge1matches[i].edgeLabel != -1)
             printf("For: %d, To: %d, Label: %d \n", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
     }
 
     printf("Edge2matches: \n ");
-    for(int i=0; i< sizeof(edge2matches)/sizeof(edge2matches[0]); i++){
+    for(int i=0; i< hashTableSize; i++){
         if (edge2matches[i].edgeLabel != -1)
             printf("For: %d, To: %d, Label: %d \n", edge2matches[i].fromNode, edge2matches[i].toNode, edge2matches[i].edgeLabel);
     }
 
     printf("Edge3matches: \n ");
-    for(int i=0; i< sizeof(edge3matches)/sizeof(edge3matches[0]); i++){
+    for(int i=0; i< hashTableSize; i++){
         if (edge3matches[i].edgeLabel != -1)
             printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
     }
