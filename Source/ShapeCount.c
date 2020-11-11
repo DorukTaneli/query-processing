@@ -622,7 +622,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     //increment counter if yes
     //return counter
 
-    int final_counter = 0;
 
     for (int i = 0; i<hashTableSize;i++){
         int valids1_edge3toHash = toHash(edge3matches[i].toNode, hashTableSize);
@@ -651,11 +650,28 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
 
         if ((isMatch1 == 1) && (isMatch2 == 1)){
-            final_counter++;
+            int valids3_toHash = toHash(edge3matches[i].toNode, hashTableSize);
+            int valids3_lp = 0;
+
+            while (valids3_lp < hashTableSize){
+                if(valids3[(valids3_toHash+valids3_lp)%hashTableSize].fromNode == -1){
+                    valids3[(valids3_toHash+valids3_lp)%hashTableSize].fromNode = edge3matches[i].fromNode;
+                    valids3[(valids3_toHash+valids3_lp)%hashTableSize].toNode = edge3matches[i].toNode;
+                    valids3[(valids3_toHash+valids3_lp)%hashTableSize].edgeLabel = edge3matches[i].edgeLabel;
+                }
+                valids3_lp++;
+            }
         }
     }
 
-    return final_counter;
+    printf("VALIDS 3: \n");
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids3[i].edgeLabel != -1) {
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
+        }
+    }
+
+    return 0;
 
 
 /*
