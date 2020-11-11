@@ -579,14 +579,14 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     int quad = 0;
     for (int iter = 0; iter < hashTableSize; iter++) {
 
-        while (1) {
+        while (quad < hashTableSize) {
             int hashValue = fromHash(edge1matches[iter].fromNode, hashTableSize);
             int RightFrom;
 
             int hashValueR = toHash(edge1matches[iter].toNode, hashTableSize);
 
             int quadR = 1;
-            while (1) {
+            while (quadR < hashTableSize) {
                 if (edge2matches[(hashValueR + quadR)%hashTableSize].fromNode == edge1matches[iter].toNode) {
                         RightFrom = edge2matches[(hashValueR + quadR)%hashTableSize].fromNode;  
                 }
@@ -604,7 +604,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int hashValueValids1 = fromHash(edge1matches[iter].fromNode, hashTableSize);
 
                 int quadValids1 = 1;
-                while (1) {
+                while (quadValids1 < hashTableSize) {
                     if (edge1matches[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
                         edge1matches[(hashValue + quadValids1)%hashTableSize] = buildInputValids1;
                         break;    
@@ -616,7 +616,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int hashValueValids2 = toHash(edge2matches[iter].toNode, hashTableSize);
 
                 int quadValids2 = 1;
-                while (1) {
+                while (quadValids2 < hashTableSize) {
                     if (edge2matches[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
                         edge2matches[(hashValue + quadValids2)%hashTableSize] = buildInputValids2;
                         break;    
@@ -647,14 +647,14 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     int quad2 = 0;
     for (int iter = 0; iter < hashTableSize; iter++) {
 
-        while (1) {
+        while (quad2 < hashTableSize) {
             int hashValue = fromHash(edge3matches[iter].fromNode, hashTableSize);
             int RightFrom;
 
             int hashValueR = toHash(valids2[iter].toNode, hashTableSize);
 
             int quadR = 1;
-            while (1) {
+            while (quadR < hashTableSize) {
                 if (edge3matches[(hashValueR + quadR)%hashTableSize].fromNode == valids2[iter].toNode) {
                         RightFrom = edge3matches[(hashValueR + quadR)%hashTableSize].fromNode;  
                 }
