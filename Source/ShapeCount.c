@@ -615,8 +615,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int quadValids1 = 1;
                 while (quadValids1 < hashTableSize) {
                     if (valids1[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
-                        printf("Do we get here? \n");
                         valids1[(hashValueValids1 + quadValids1)%hashTableSize] = buildInputValids1;
+                        printf("INSERTED %d, %d, %d \n",edge1matches[iter].fromNode, edge1matches[iter].toNode, edge1matches[iter].edgeLabel );
                         break;    
                     }
                     quadValids1++;
@@ -628,7 +628,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int quadValids2 = 1;
                 while (quadValids2 < hashTableSize) {
                     if (valids2[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
-                        printf("Do we get here two? \n");
                         valids2[(hashValueValids2 + quadValids2)%hashTableSize] = buildInputValids2;
                         break;    
                     }
