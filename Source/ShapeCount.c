@@ -690,9 +690,11 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
     
     int final_counter = 0;
+    printf("VALIDS 3: \n");
     for (int i = 0; i<hashTableSize; i++){
         if (valids3[i].edgeLabel != -1) {
             final_counter++;
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
         }
     }
 
