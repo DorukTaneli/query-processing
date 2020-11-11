@@ -589,15 +589,15 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     for (int iter = 0; iter < hashTableSize; iter++) {
 
         while (quad < hashTableSize) {
-            int hashValue = fromHash(edge2matches[iter].fromNode, hashTableSize);
+            int hashValue = fromHash(edge1matches[iter].fromNode, hashTableSize);
             int RightFrom;
 
-            //int hashValueR = toHash(edge1matches[iter].toNode, hashTableSize);
+            int hashValueR = toHash(edge1matches[iter].toNode, hashTableSize);
 
             int quadR = 1;
             while (quadR < hashTableSize) {
-                if (edge2matches[(hashValue + quadR)%hashTableSize].fromNode == edge1matches[iter].toNode) {
-                        RightFrom = edge2matches[(hashValue + quadR)%hashTableSize].fromNode;  
+                if (edge2matches[(hashValueR + quadR)%hashTableSize].fromNode == edge1matches[iter].toNode) {
+                        RightFrom = edge2matches[(hashValueR + quadR)%hashTableSize].fromNode;  
                 }
 
                 if (quadR > hashTableSize) {
