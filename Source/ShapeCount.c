@@ -481,15 +481,18 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         edge3matches[i].edgeLabel = -1;
     }
 
+
+    //edge1 - to
     for (int i = 0; i<hashTableSize; i++) {
         if (db[i].edgeLabel == edgeLabel1) {
-            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel1};
-            int hashValue = toHash(buildInput, hashTableSize);
+            int hashValue = toHash(edgeLabel1, hashTableSize);
 
             int quad = 1;
             while (1) {
                 if (edge1matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
-                    edge1matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    edge1matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel1;
+                    edge1matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
+                    edge1matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
                     //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
@@ -498,15 +501,17 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    //edge2 - from
     for (int i = 0; i<hashTableSize; i++) {
         if (db[i].edgeLabel == edgeLabel2) {
-            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel2};
-            int hashValue = fromHash(buildInput, hashTableSize);
+            int hashValue = fromHash(edgeLabel2, hashTableSize);
 
             int quad = 1;
             while (1) {
                 if (edge2matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
-                    edge2matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    edge2matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel2;
+                    edge2matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
+                    edge2matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
                     //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
@@ -515,15 +520,17 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    //edge3 - from
     for (int i = 0; i<hashTableSize; i++) {
         if (db[i].edgeLabel == edgeLabel3) {
-            struct edge buildInput = {db[i].fromNode, db[i].toNode, edgeLabel3};
-            int hashValue = fromHash(buildInput, hashTableSize);
+            int hashValue = fromHash(edgeLabel3, hashTableSize);
 
             int quad = 1;
             while (1) {
                 if (edge3matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
-                    edge3matches[(hashValue + quad)%hashTableSize] = buildInput;
+                    edge3matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel3;
+                    edge3matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
+                    edge3matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
                     //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
