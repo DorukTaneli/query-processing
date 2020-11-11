@@ -562,7 +562,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     //printf("Arrays filled \n");
 
     // edges1 toNode = edges2 fromNode
-
     struct edge valids1[hashTableSize]; //FROM
     struct edge valids2[hashTableSize]; //TO
 
@@ -576,54 +575,63 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         valids2[i].edgeLabel = -1;
     }
 
-    int iter = 0;
+
     int quad = 0;
-    while (1) {
-        //if (db[(fromHash() WE ARE HEEEREEEEEEEE
+    for (int iter = 0; iter < hashTableSize; iter++) {
 
         while (1) {
+            int hashValue = fromHash(edge1matches[iter].toNode, hashTableSize);
+            int RightFrom;
 
-            if (edge1matches[(iter)%hashTableSize].toNode == edge2matches[(quad)%hashTableSize].fromNode){
-                
+            int hashValueR = fromHash(edge1matches[iter].toNode, hashTableSize);
+
+            int quadR = 1;
+            while (1) {
+                if (edge2matches[(hashValueR + quadR)%hashTableSize].fromNode == edge1matches[iter].toNode) {
+                        RightFrom = edge2matches[(hashValueR + quadR)%hashTableSize].fromNode;  
+                }
+
+                if (quadR > hashTableSize) {
+                   break;
+                }
+
+                quadR++;
             }
 
-            if (quad2 > hashTableSize) {
-                return -1;
+            if (edge1matches[iter].toNode == RightFrom){
+                //Insert to hashTable
+                struct edge buildInputValids1 = {edge1matches[iter].fromNode, edge1matches[iter].toNode, edge1matches[iter].edgeLabel};
+                int hashValueValids1 = fromHash(edge1matches[iter].fromNode, hashTableSize);
+
+                int quadValids1 = 1;
+                while (1) {
+                    if (edge1matches[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
+                        edge1matches[(hashValue + quadValids1)%hashTableSize] = buildInputValids1;
+                        break;    
+                    }
+                    quadValids1++;
+                }
+
+                struct edge buildInputValids2 = {edge2matches[iter].fromNode, edge2matches[iter].toNode, edge2matches[iter].edgeLabel};
+                int hashValueValids2 = toHash(edge2matches[iter].toNode, hashTableSize);
+
+                int quadValids2 = 1;
+                while (1) {
+                    if (edge2matches[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
+                        edge2matches[(hashValue + quadValids2)%hashTableSize] = buildInputValids2;
+                        break;    
+                    }
+                    quadValids2++;
+                }
             }
-            quad2++;
+
+            if (quad > hashTableSize) {
+               break;
+            }
+            quad++;
 
         }
-
-
-
-
-        if (quad > hashTableSize) {
-            return -1;
-        }
-
-        iter++;
     }
-
-
-/*
-int quad = 1;
-    while (1) {
-        if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
-            db[(hashValue + quad)%hashTableSize].toNode == probeInput.toNode &&
-            db[(hashValue + quad)%hashTableSize].edgeLabel == probeInput.edgeLabel) {
-                return probeInput.edgeLabel;  
-        }
-
-        if (quad > hashTableSize) {
-            return -1;
-        }
-
-        quad++;
-    }
-*/
-
-
-
 
     int validIter = 0;
     while(leftIter < totNoEdges && rightIter < totNoEdges) {
