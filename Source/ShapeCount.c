@@ -658,6 +658,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     valids3[(valids3_toHash+valids3_lp)%hashTableSize].fromNode = edge3matches[i].fromNode;
                     valids3[(valids3_toHash+valids3_lp)%hashTableSize].toNode = edge3matches[i].toNode;
                     valids3[(valids3_toHash+valids3_lp)%hashTableSize].edgeLabel = edge3matches[i].edgeLabel;
+                    break;
                 }
                 valids3_lp++;
             }
