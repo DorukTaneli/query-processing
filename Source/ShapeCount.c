@@ -650,7 +650,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             valids2_edge3_lp++;
         }
 
-        if ((isMatch1 == 1) and (isMatch2 == 1)){
+        if ((isMatch1 == 1) && (isMatch2 == 1)){
             final_counter++;
         }
     }
