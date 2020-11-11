@@ -610,7 +610,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             if (edge1matches[iter].toNode == RightFrom){
                 //Insert to hashTable
                 struct edge buildInputValids1 = {edge1matches[iter].fromNode, edge1matches[iter].toNode, edge1matches[iter].edgeLabel};
-                int hashValueValids1 = fromHash(edge1matches[iter].fromNode, hashTableSize);
+                int hashValueValids1 = toHash(edge1matches[iter].fromNode, hashTableSize);
 
                 int quadValids1 = 1;
                 while (quadValids1 < hashTableSize) {
@@ -623,7 +623,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 }
 
                 struct edge buildInputValids2 = {edge2matches[iter].fromNode, edge2matches[iter].toNode, edge2matches[iter].edgeLabel};
-                int hashValueValids2 = toHash(edge2matches[iter].toNode, hashTableSize);
+                int hashValueValids2 = fromHash(edge2matches[iter].toNode, hashTableSize);
 
                 int quadValids2 = 1;
                 while (quadValids2 < hashTableSize) {
