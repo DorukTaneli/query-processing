@@ -605,8 +605,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
                 int quadValids1 = 1;
                 while (quadValids1 < hashTableSize) {
-                    if (edge1matches[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
-                        edge1matches[(hashValue + quadValids1)%hashTableSize] = buildInputValids1;
+                    if (valids1[(hashValueValids1 + quadValids1)%hashTableSize].edgeLabel == -1) {
+                        valids1[(hashValue + quadValids1)%hashTableSize] = buildInputValids1;
                         break;    
                     }
                     quadValids1++;
@@ -617,8 +617,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
                 int quadValids2 = 1;
                 while (quadValids2 < hashTableSize) {
-                    if (edge2matches[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
-                        edge2matches[(hashValue + quadValids2)%hashTableSize] = buildInputValids2;
+                    if (valids2[(hashValueValids2 + quadValids2)%hashTableSize].edgeLabel == -1) {
+                        valids2[(hashValue + quadValids2)%hashTableSize] = buildInputValids2;
                         break;    
                     }
                     quadValids2++;
