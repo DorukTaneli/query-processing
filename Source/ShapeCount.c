@@ -597,7 +597,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     valids2_linear_prober++;
                 }
 
-                break;
+                //break;
             }
         linear_proberE2M++;
         }
