@@ -633,47 +633,10 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    int validIter = 0;
-    while(leftIter < totNoEdges && rightIter < totNoEdges) {
-        struct edge leftInput = edge1matches[leftIter];
-        struct edge rightInput = edge2matches[rightIter];
-        if(leftInput.toNode == -1){
-            leftIter++;
-            //printf("Skipped: %d, %d, %d \n", leftInput.fromNode, leftInput.toNode, leftInput.edgeLabel);
-            }
-        else if(rightInput.fromNode == -1)
-            rightIter++;
-        else if(leftInput.toNode < rightInput.fromNode)
-            leftIter++;
-        else if(rightInput.fromNode < leftInput.toNode)
-            rightIter++;
-        else {
-            //Write to output
-            //printf("Edge 1: %d, %d, %d \n", edge1matches[leftIter].fromNode, edge1matches[leftIter].toNode, edge1matches[leftIter].edgeLabel);
-            //printf("Edge 2: %d, %d, %d \n",edge2matches[leftIter].fromNode, edge2matches[leftIter].toNode, edge2matches[leftIter].edgeLabel);
-            valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
-            valids1[validIter].toNode = edge1matches[leftIter].toNode;
-            valids1[validIter].edgeLabel = edge1matches[leftIter].edgeLabel;
-
-            valids2[validIter].fromNode = edge2matches[leftIter].fromNode;
-            valids2[validIter].toNode = edge2matches[leftIter].toNode;
-            valids2[validIter].edgeLabel = edge2matches[leftIter].edgeLabel;
-            validIter++;
-            
-            //Check for non-uniqueness
-            if (leftInput.toNode == edge1matches[leftIter+1].toNode)
-                leftIter++;
-            else if (rightInput.fromNode == edge2matches[rightIter+1].fromNode)
-                rightIter++;
-            else {
-                leftIter++;
-                rightIter++;
-            }
-        }
-    }
-
+    struct edge valids3[hashTableSize];
 
     return 5;
+
 }
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
     struct edge_db *dbstruct = (struct edge_db *) database;
