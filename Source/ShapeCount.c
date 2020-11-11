@@ -577,6 +577,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].fromNode = edge1matches[iter].fromNode;
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].toNode = edge1matches[iter].toNode;
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel = edge1matches[iter].edgeLabel;
+                        break;
                     }
                     valids1_linear_prober++;
                 }
@@ -591,6 +592,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].fromNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode;
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].toNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].toNode;
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].edgeLabel = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].edgeLabel;
+                        break;
                     }
                     valids2_linear_prober++;
                 }
