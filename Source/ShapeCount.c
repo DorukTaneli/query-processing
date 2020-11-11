@@ -564,6 +564,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
         int fromHashEdge2 = fromHash(edge1matches[iter].toNode, hashTableSize);
         int linear_proberE2M = 0;
+        int already_inserted = 0;
 
         while (linear_proberE2M<hashTableSize){
             if(edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode == edge1matches[iter].toNode) {
@@ -573,10 +574,11 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int valids1_linear_prober = 0;
                 while (valids1_linear_prober<hashTableSize){
                     //IF EMPTY SPOT FOUND INSERT
-                    if (valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel == -1){
+                    if (valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel == -1 && (already_inserted == 0)){
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].fromNode = edge1matches[iter].fromNode;
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].toNode = edge1matches[iter].toNode;
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel = edge1matches[iter].edgeLabel;
+                        already_inserted = 1;
                         break;
                     }
                     valids1_linear_prober++;
