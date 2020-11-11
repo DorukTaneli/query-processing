@@ -607,6 +607,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 quadR++;
             }
 
+            printf("RightFrom: %d \n", RightFrom);
+
             if (edge1matches[iter].toNode == RightFrom){
                 //Insert to hashTable
                 struct edge buildInputValids1 = {edge1matches[iter].fromNode, edge1matches[iter].toNode, edge1matches[iter].edgeLabel};
