@@ -632,6 +632,21 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
         }
     }
+    //TESTING 
+
+    printf("VALIDS 1: \n");
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids1[i].edgeLabel != -1) {
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids1[i].fromNode,valids1[i].toNode, valids1[i].edgeLabel);
+        }
+    }
+    printf("VALIDS 2: \n");
+    for (int i = 0; i<hashTableSize; i++){
+        if (valids2[i].edgeLabel != -1) {
+            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids2[i].fromNode,valids2[i].toNode, valids2[i].edgeLabel);
+        }
+    }
+
 
     // _________
 
