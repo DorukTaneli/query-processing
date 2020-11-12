@@ -275,6 +275,51 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    struct edge valids3_FINAL[totNoEdges];
+    for(int i=0; i<totNoEdges; i++) {
+        valids3_FINAL[i].fromNode = -1;
+        valids3_FINAL[i].toNode = -1;
+        valids3_FINAL[i].edgeLabel = -1;
+    }
+
+    qsort(valids3, (sizeof(valids3)/sizeof(valids3[0])), sizeof(valids3[0]), &comparatorForTo);
+    qsort(valids1, (sizeof(valids1)/sizeof(valids1[0])), sizeof(valids1[0]), &comparatorForFrom);
+    leftIter = 0;
+    rightIter = 0;
+    validIter = 0;
+
+    while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
+        struct edge leftInput = valids3[leftIter];
+        struct edge rightInput = valids1[rightIter];
+        if(leftInput.toNode == -1)
+            leftIter++;
+        else if(rightInput.fromNode == -1)
+            rightIter++;
+        else if(leftInput.toNode < rightInput.fromNode)
+            leftIter++;
+        else if(rightInput.fromNode < leftInput.toNode)
+            rightIter++;
+        else {
+            //Write to output
+            valids3_FINAL[validIter].fromNode = valids3[rightIter].fromNode;
+            valids3_FINAL[validIter].toNode = valids3[rightIter].toNode;
+            valids3_FINAL[validIter].edgeLabel = valids3[rightIter].edgeLabel;
+            validIter++;
+            
+            //Check for non-uniqueness
+            if (leftInput.toNode == valids2[leftIter+1].toNode)
+                leftIter++;
+            else if (rightInput.fromNode == edge3matches[rightIter+1].fromNode)
+                rightIter++;
+            else {
+                leftIter++;
+                rightIter++;
+            }
+        }
+    }
+
+    
+
     int final_count = 0;
 
     printf("VALIDS 1: \n");
@@ -292,9 +337,9 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     printf("VALIDS 3: \n");
-    for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
-        if (valids3[i].edgeLabel != -1){
-            printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
+    for(int i=0; i< sizeof(valids3_FINAL)/sizeof(valids3_FINAL[0]); i++){
+        if (valids3_FINAL[i].edgeLabel != -1){
+            printf("For: %d, To: %d, Label: %d \n", valids3_FINAL[i].fromNode, valids3_FINAL[i].toNode, valids3_FINAL[i].edgeLabel);
         }
     }
 
