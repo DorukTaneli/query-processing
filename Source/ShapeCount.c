@@ -369,15 +369,15 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     int final_counts[3] = {v1_counter, v2_counter, v3_counter};
-    int count = v1_counter;
+    int numTriangles = v1_counter;
 
     for (int i = 0; i<3;i++){
-        if (final_counts[i]<count){
-            count = final_counts[i];
+        if (final_counts[i]<numTriangles){
+            numTriangles = final_counts[i];
         }
     }
 
-    return count;
+    return numTriangles;
 
     //printf("Second join completed \n");
 
