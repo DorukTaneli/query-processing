@@ -27,8 +27,7 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
     implementation.insertEdge(db, 0, 1, 0);
     implementation.insertEdge(db, 1, 2, 1);
     implementation.insertEdge(db, 2, 0, 2);
-    implementation.insertEdge(db, 1, 9, 1);
-
+  
     implementation.insertEdge(db, 0, 3, 0);
     implementation.insertEdge(db, 3, 2, 1);
     implementation.insertEdge(db, 2, 5, 2);

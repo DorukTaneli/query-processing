@@ -378,6 +378,10 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     return numTriangles;
 
+    
+    //NOT NEEDED
+
+    
     //printf("Second join completed \n");
 
     // edges3 toNode = edges1 fromNode
