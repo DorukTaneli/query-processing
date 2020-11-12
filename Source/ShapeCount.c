@@ -321,7 +321,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     
 
     int final_count = 0;
-/*
+
     printf("VALIDS 1: \n");
     for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
         if (valids1[i].edgeLabel != -1){
@@ -343,7 +343,6 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    */
 
     int v1_counter = 0;
     int v2_counter = 0;
