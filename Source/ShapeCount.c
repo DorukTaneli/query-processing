@@ -321,7 +321,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     
 
     int final_count = 0;
-
+/*
     printf("VALIDS 1: \n");
     for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
         if (valids1[i].edgeLabel != -1){
@@ -343,17 +343,41 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+    */
 
+    int v1_counter = 0;
+    int v2_counter = 0;
+    int v3_counter = 0;
 
     //printf("valids3: \n ");
-    for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
-        if (valids3[i].edgeLabel != -1){
-            //printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
-            final_count++;
+    for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
+        if (valids1[i].edgeLabel != -1){
+            v1_counter++;
         }
     }
 
-    return final_count;
+    for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
+        if (valids2[i].edgeLabel != -1){
+            v2_counter++;
+        }
+    }
+
+    for(int i=0; i< sizeof(valids3_FINAL)/sizeof(valids3_FINAL[0]); i++){
+        if (valids3_FINAL[i].edgeLabel != -1){
+            v3_counter++;
+        }
+    }
+
+    int final_counts[3] = {v1_counter, v2_counter, v3_counter};
+    int count = v1_counter;
+
+    for (int i = 0; i<3;i++){
+        if (final_counts[i]<count){
+            count = final_counts[i];
+        }
+    }
+
+    return count;
 
     //printf("Second join completed \n");
 
