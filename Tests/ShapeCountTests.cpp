@@ -34,7 +34,6 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
     REQUIRE(implementation.runQuery(db, 0, 1, 2) == 2);
   }
 
-/*
   SECTION("Test non ending triangle") {
     implementation.insertEdge(db,0,1,0);
     implementation.insertEdge(db,1,2,1);
@@ -42,7 +41,7 @@ TEMPLATE_TEST_CASE("Dummy", "", SortMergeJoinImplementation, HashjoinImplementat
     REQUIRE(implementation.runQuery(db, 0, 1, 2) == 0);
   }
 
-  */
+
 
   //END OF OUR TESTS
 

@@ -729,6 +729,9 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         if (final_counts[i] >final_count){
             final_count = final_counts[i];
         }
+        if (final_counts[i] == 0){
+            return 0;
+        }
     }
 
     return final_count;
