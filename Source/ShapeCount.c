@@ -277,6 +277,29 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     int final_count = 0;
 
+    printf("VALIDS 1: \n");
+    for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
+        if (valids1[i].edgeLabel != -1){
+            printf("For: %d, To: %d, Label: %d \n", valids1[i].fromNode, valids1[i].toNode, valids1[i].edgeLabel);
+        }
+    }
+
+    printf("VALIDS 2: \n");
+    for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
+        if (valids2[i].edgeLabel != -1){
+            printf("For: %d, To: %d, Label: %d \n", valids2[i].fromNode, valids2[i].toNode, valids2[i].edgeLabel);
+        }
+    }
+
+    printf("VALIDS 3: \n");
+    for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
+        if (valids3[i].edgeLabel != -1){
+            printf("For: %d, To: %d, Label: %d \n", valids3[i].fromNode, valids3[i].toNode, valids3[i].edgeLabel);
+        }
+    }
+
+
+
     //printf("valids3: \n ");
     for(int i=0; i< sizeof(valids3)/sizeof(valids3[0]); i++){
         if (valids3[i].edgeLabel != -1){
