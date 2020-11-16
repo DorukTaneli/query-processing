@@ -484,17 +484,17 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 }
 
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
-    //printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
-    //printf("Run query called \n");
 
-    struct edge edge1matches[hashTableSize]; //TO
-    struct edge edge2matches[hashTableSize]; //FROM
-    struct edge edge3matches[hashTableSize]; //FROM
+    struct edge edge1matches[hashTableSize]; //To hash since we are interested in where edge1 is going at this time
+    struct edge edge2matches[hashTableSize]; //FROM hash since we are interested in where edge2 is coming from at this time
+    struct edge edge3matches[hashTableSize]; //FROM hash since we are interested in where edge3 is coming from at this time
 
-    //printf("Edge match arrays init complete\n");
+
+    //Initializing the arrays
+    //edgeXmatches will store all edges that have value X
 
     for (int i = 0; i<hashTableSize; i++) {
         edge1matches[i].fromNode = -1;
@@ -571,6 +571,9 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     //printf("edgeXmatches filled\n");
 
     // edges1 toNode = edges2 fromNode
+    //valids1 means all edges that have the correct value for edge1 and are going to a node
+    //that has a correct value for edge2
+    //Same for the other two
     struct edge valids1[hashTableSize]; //FROM
     struct edge valids2[hashTableSize]; //TO
     struct edge valids3[hashTableSize]; 
@@ -590,6 +593,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
     //ITERATING OVER EDGE 1 MATCHES
+    //We create valids1 by checking all edges that have the correct value for edge1 and if 
+    //they are going to a node that has a correct valued edge coming out of it
     for (int iter = 0; iter<hashTableSize; iter++){
 
         int fromHashEdge2 = fromHash(edge1matches[iter].toNode, hashTableSize);
@@ -597,13 +602,14 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         int already_inserted = 0;
 
         while (linear_proberE2M<hashTableSize){
+            //Does this edge2 connect to an edge1, if so we include them is valids2 and valids1 respectively
             if(edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode == edge1matches[iter].toNode) {
                 //INSERT INTO VALIDS 1 AND VALIDS 2
                 //valids 1 insert
                 int valids1_toHash = toHash(edge1matches[iter].toNode, hashTableSize);
                 int valids1_linear_prober = 0;
                 while (valids1_linear_prober<hashTableSize){
-                    //IF EMPTY SPOT FOUND INSERT
+                    //IF EMPTY SPOT FOUND INSERT matching edge1 into valids1
                     if (valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].edgeLabel == -1 && (already_inserted == 0)){
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].fromNode = edge1matches[iter].fromNode;
                         valids1[(valids1_toHash+valids1_linear_prober)%hashTableSize].toNode = edge1matches[iter].toNode;
@@ -624,7 +630,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 int valids2_linear_prober = 0;
 
                 while (valids2_linear_prober<hashTableSize){
-                    //IF EMPTY SPOT FOUND INSERT
+                    //IF EMPTY SPOT FOUND INSERT matching edge2 into valids2
                     if (valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].edgeLabel == -1){
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].fromNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].fromNode;
                         valids2[(valids2_fromHash+valids2_linear_prober)%hashTableSize].toNode = edge2matches[(fromHashEdge2 + linear_proberE2M)%hashTableSize].toNode;
@@ -640,48 +646,10 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    //TESTING 
-
-    /*
-
-    printf("Edge1: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (edge1matches[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", edge1matches[i].fromNode,edge1matches[i].toNode, edge1matches[i].edgeLabel);
-        }
-    }
-
-    printf("Edge2: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (edge2matches[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", edge2matches[i].fromNode,edge2matches[i].toNode, edge2matches[i].edgeLabel);
-        }
-    }
-
-    printf("Edge3: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (edge3matches[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", edge3matches[i].fromNode,edge3matches[i].toNode, edge3matches[i].edgeLabel);
-        }
-    }
-
-    printf("VALIDS 1: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (valids1[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids1[i].fromNode,valids1[i].toNode, valids1[i].edgeLabel);
-        }
-    }
-    printf("VALIDS 2: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (valids2[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids2[i].fromNode,valids2[i].toNode, valids2[i].edgeLabel);
-        }
-    }
-
-    */
-    
-
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
+    //if yes then we van say that it belongs in valids3 since it completes the triangle
+    // ie if edge3match.toNode = valids1.fromNode and edge3match.fromNode = valids2.toNode 
+
 
     for (int i = 0; i<hashTableSize;i++){
         int valids1_edge3toHash = toHash(edge3matches[i].toNode, hashTableSize);
@@ -727,19 +695,15 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
     
-    /*
-    printf("VALIDS 3: \n");
-    for (int i = 0; i<hashTableSize; i++){
-        if (valids3[i].edgeLabel != -1) {
-            printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
-        }
-    }
-
-    */
-    
 
     //Run through valids3
     //If match on valids1 has a triangle with 
+
+    //The largest valids table will correspond to the number of triangles
+    //Triangles can share edges but if they have to differ in certain edges to be different
+    //The validsX will mean that they differ on X and therefore the validsX.count() = number of triangles
+    // If any of the valids are zero it means that the edges specified didn't form any triangles
+
 
     int valids1_counter = 0;
     int valids2_counter = 0;
