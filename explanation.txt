@@ -1,0 +1,25 @@
+﻿Explanation:
+To run our queries, we do the following steps:
+1. Put edges with desired labels into 3 separate arrays.
+2. Make 3 joins to check which edges with desired labels form a triangle.
+   1. edges1-toNode == edges2-fromNode
+   2. edges2-toNode == edges3-fromNode
+   3. edges3-toNode == edges1-fromNode
+3. Count and return the number of triangles found
+
+
+Performance comparison: 
+Sort Merge Join runs far faster than hash join in our case. This may be due to a mismatch of hash functions. 
+This means that the hash function causes us to index into the wrong part of the hash table, 
+thereby causing us to loop for longer than necessary through the hash table. 
+
+For the 1024 case sort merge join runs it in 400627927 ns vs 117159805840 ns in for hash join. 
+This is an approximately 300x difference in performance. 
+This may also be due to inefficient searching through the hash table repeatedly and perhaps not breaking on time. 
+
+Our Sort Merge Join algorithm runs faster since it indexes correctly into the table it is querying.
+Whereas in the hash join, due to a mismatch in hash functions, it can index into the wrong part of the hash table.
+This causes the algorithm to take a long time to loop through the entire table to find the desired result.
+
+Sort Merge join scales far better that hash join since the bigger the hash table gets the worse the indexing issue becomes. 
+If the table is large and we index into the wrong area the performance is severely impacted. 
