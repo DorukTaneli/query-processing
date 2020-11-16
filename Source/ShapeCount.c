@@ -1,4 +1,5 @@
 //#include <limits.h>
+#include <stdlib.h>
 
 typedef void* SortMergeJoinDatabase;
 
