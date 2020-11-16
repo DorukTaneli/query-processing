@@ -640,7 +640,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    printf("edgeXmatches filled\n");
+    //printf("edgeXmatches filled\n");
 
     // edges1 toNode = edges2 fromNode
     struct edge valids1[hashTableSize]; //FROM
