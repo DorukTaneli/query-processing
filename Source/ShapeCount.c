@@ -699,6 +699,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             if(valids1[(valids1_edge3toHash+valids1_edge3_lp)%hashTableSize].fromNode == edge3matches[i].toNode){
                 if (edge3matches[i].toNode != -1){
                     isMatch1 = 1;
+                    break;
                 }
             }
             valids1_edge3_lp++;
@@ -708,6 +709,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             if(valids2[(valids2_edge3fromHash+valids2_edge3_lp)%hashTableSize].toNode == edge3matches[i].fromNode){
                 if (edge3matches[i].toNode != -1){
                     isMatch2 = 1;
+                    break;
                 }
             }
             valids2_edge3_lp++;
