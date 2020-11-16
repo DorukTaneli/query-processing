@@ -470,7 +470,7 @@ void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int
 void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
     struct edge_db *dbstruct = (struct edge_db *) database;
 
-    //free(dbstruct);
+    free(dbstruct);
 }
 
 
@@ -1014,7 +1014,7 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 }
 void HashjoinDeleteDatabase(HashjoinDatabase database){
     struct edge_db *dbstruct = (struct edge_db *) database;
-    //free(dbstruct);
+    free(dbstruct);
 }
 
 typedef void* CompetitionDatabase;
@@ -1394,7 +1394,7 @@ void CompetitionDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNode
 
 void CompetitionDeleteDatabase(HashjoinDatabase database){
     struct edge_db *dbstruct = (struct edge_db *) database;
-    //free(dbstruct);
+    free(dbstruct);
 }
 
 
