@@ -533,7 +533,7 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
 }
 
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
-    //printf("InsertEdge called\n");
+    printf("InsertEdge called\n");
     struct edge_db *dbstruct = (struct edge_db *) database;
 
     struct edge *db = dbstruct->db;
