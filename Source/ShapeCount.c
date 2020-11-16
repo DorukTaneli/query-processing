@@ -471,8 +471,6 @@ int fromHash(int fromNode, int hashTableSize) {
     return (fromNode*5) % hashTableSize;
 }
 
-
-
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
     struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * (totalNumberOfEdgesInTheEnd*hashattribute)));
     
@@ -534,7 +532,6 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
         quad++;
     }
 }
-
 
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
     //printf("_____FUNCTION START_______ \n");
@@ -828,6 +825,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     return final_count;
     
 }
+
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
@@ -855,6 +853,7 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
         quad++;
     }
 }
+
 void HashjoinDeleteDatabase(HashjoinDatabase database){
     struct edge_db *dbstruct = (struct edge_db *) database;
     free(dbstruct);
@@ -898,39 +897,28 @@ CompetitionDatabase CompetitionAllocateDatabase(unsigned long totalNumberOfEdges
 }
 
 void CompetitionInsertEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
-    //printf("InsertEdge called\n");
     struct edge_db *dbstruct = (struct edge_db *) database;
-
     struct edge *db = dbstruct->db;
-
     int totNoEdges = dbstruct->length;
 
-    //printf("Total Edges: %d -- %d \n", sizeof(db), dbstruct->length);
-
     for (int i = 0; i<totNoEdges; i++) {
-        //printf("%d\n", db[i].edgeLabel);
         if (db[i].edgeLabel == -1) {
             db[i].fromNode = fromNodeID;
             db[i].toNode = toNodeID;
             db[i].edgeLabel = edgeLabel;
-            //printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
     }
 }
 
 int CompetitionRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3) {
-    //printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int totNoEdges = dbstruct->length;
-    //printf("Run query called \n");
 
     struct edge edge1matches[totNoEdges];
     struct edge edge2matches[totNoEdges];
     struct edge edge3matches[totNoEdges];
-
-    //printf("Edge match arrays init complete\n");
 
     for (int i = 0; i<totNoEdges; i++) {
         if(db[i].edgeLabel == edgeLabel1) {
@@ -967,34 +955,10 @@ int CompetitionRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int edge
         }
     }
 
-    /*
-    printf("Edge1matches: \n ");
-    for(int i=0; i< sizeof(edge1matches)/sizeof(edge1matches[0]); i++){
-        if (edge1matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge1matches[i].fromNode, edge1matches[i].toNode, edge1matches[i].edgeLabel);
-    }
-
-    printf("Edge2matches: \n ");
-    for(int i=0; i< sizeof(edge2matches)/sizeof(edge2matches[0]); i++){
-        if (edge2matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge2matches[i].fromNode, edge2matches[i].toNode, edge2matches[i].edgeLabel);
-    }
-
-    printf("Edge3matches: \n ");
-    for(int i=0; i< sizeof(edge3matches)/sizeof(edge3matches[0]); i++){
-        if (edge3matches[i].edgeLabel != -1)
-            printf("For: %d, To: %d, Label: %d \n", edge3matches[i].fromNode, edge3matches[i].toNode, edge3matches[i].edgeLabel);
-    }
-    */
-
-    //printf("Arrays filled \n");
-
     // The sort merge joins we need to run
     // edges1 toNode = edges2 fromNode
     qsort(edge1matches, (sizeof(edge1matches)/sizeof(edge1matches[0])), sizeof(edge1matches[0]), &comparatorForTo);
     qsort(edge2matches, (sizeof(edge2matches)/sizeof(edge2matches[0])), sizeof(edge2matches[0]), &comparatorForFrom);
-
-    //printf("QSORT Completed \n");
 
     int leftIter = 0;
     int rightIter = 0;
@@ -1279,11 +1243,10 @@ void CompetitionDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int t
 
     for (int i = 0; i<(totNoEdges); i++) {
         if (db[i].fromNode == fromNodeID && db[i].toNode == toNodeID && db[i].edgeLabel == edgeLabel) {
-            //printf("Deleted edge: %d \n", db[i].edgeLabel);
             db[i].fromNode = -1;
             db[i].toNode = -1;
             db[i].edgeLabel = -1;
-            break; //If we have duplicates remove this
+            break;
         }
     }
 }
