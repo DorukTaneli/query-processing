@@ -594,7 +594,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     edge1matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel1;
                     edge1matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge1matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -613,7 +613,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     edge2matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel2;
                     edge2matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge2matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
