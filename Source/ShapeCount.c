@@ -336,26 +336,32 @@ void SortMergeJoinDeleteDatabase(SortMergeJoinDatabase database) {
 
 typedef void* HashjoinDatabase;
 
+//How much we overallocate. We allocate hashAttribute*totalNumberOfEdgesInTheEnd sized array for db
 int hashattribute = 2;
 
+//returns hashCode using all 3 attributes
 int myHash(struct edge e, int hashTableSize) {
     return (e.fromNode*5 + e.toNode*7 + e.edgeLabel*11) % hashTableSize;
 }
+
+//returns hashCode using only 'to'
 int toHash(int toNode, int hashTableSize) {
     return (toNode*7) % hashTableSize;
 }
+
+//returns hashCode using only 'for'
 int fromHash(int fromNode, int hashTableSize) {
     return (fromNode*5) % hashTableSize;
 }
 
 HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheEnd){
+    //Allocate memory in heap for database
     struct edge_db *dbstruct = (struct edge_db *) malloc(sizeof(*dbstruct) + (sizeof(struct edge) * (totalNumberOfEdgesInTheEnd*hashattribute)));
-    
     struct edge *db = dbstruct->db;
-
     dbstruct->length = totalNumberOfEdgesInTheEnd*hashattribute;
 
-    for (int i = 0; i < totalNumberOfEdgesInTheEnd*hashattribute; i++) {
+    //initialize contents to -1
+    for (int i = 0; i < totalNumberOfEdgesInTheEnd*hashattribute; i++) { 
         db[i].fromNode = -1;
         db[i].toNode = -1;
         db[i].edgeLabel = -1;
@@ -364,7 +370,9 @@ HashjoinDatabase HashjoinAllocateDatabase(unsigned long totalNumberOfEdgesInTheE
     return (void*) dbstruct;
 }
 
+//Our additional function to test if we successfully added an edge
 int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
+    //set to correct types from void pointer
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
@@ -372,6 +380,7 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
     int hashValue = myHash(probeInput, hashTableSize);
 
+    //Check if the given edge exists in hashtable using its hashcode
     int quad = 1;
     while (1) {
         if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
@@ -380,6 +389,8 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
                 return probeInput.edgeLabel;  
         }
 
+        //If the our linear probe exceeds the hash table size it means that there is no room left
+        //Hash table is full so we return -1
         if (quad > hashTableSize) {
             return -1;
         }
@@ -389,21 +400,20 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
 }
 
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
-    //printf("InsertEdge called\n");
+    //set to correct types from void pointer
     struct edge_db *dbstruct = (struct edge_db *) database;
-
     struct edge *db = dbstruct->db;
-
     int hashTableSize = dbstruct->length;
 
     struct edge buildInput = {fromNodeID, toNodeID, edgeLabel};
     int hashValue = myHash(buildInput, hashTableSize);
 
     int quad = 1;
+    //If label is -1 it means that field is empty and we can insert into it
+    //We do linear probing on the hash table to insert
     while (quad < hashTableSize) {
         if (db[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
             db[(hashValue + quad)%hashTableSize] = buildInput;
-            //printf("Inserted edge: %d \n", db[i].edgeLabel);
             break;    
         }
         quad++;
@@ -411,6 +421,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 }
 
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
+    //set to correct types from void pointer
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
@@ -422,7 +433,8 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //Initializing the arrays
     //edgeXmatches will store all edges that have value X
-
+    
+    //Initializing our tables to -1, which denotes that they are empty    
     for (int i = 0; i<hashTableSize; i++) {
         edge1matches[i].fromNode = -1;
         edge1matches[i].toNode = -1;
@@ -437,7 +449,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         edge3matches[i].edgeLabel = -1;
     }
 
-
     //edge1 - to
     for (int i = 0; i<hashTableSize; i++) {
         if (db[i].edgeLabel == edgeLabel1) {
@@ -449,7 +460,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     edge1matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel1;
                     edge1matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge1matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -468,7 +478,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     edge2matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel2;
                     edge2matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge2matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -487,7 +496,6 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                     edge3matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel3;
                     edge3matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge3matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -504,7 +512,9 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     struct edge valids1[hashTableSize]; //FROM
     struct edge valids2[hashTableSize]; //TO
     struct edge valids3[hashTableSize]; 
-
+    
+    
+    //Initializing our tables to -1, which denotes that they are empty
     for(int i=0; i<hashTableSize; i++) {
         valids1[i].fromNode = -1;
         valids1[i].toNode = -1;
@@ -621,8 +631,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                 valids3_lp++;
             }
         }
-    }
-    
+    } 
 
     //Run through valids3
     //If match on valids1 has a triangle with 
@@ -671,6 +680,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 }
 
 void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
+    //set to correct types from void pointer
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
@@ -678,6 +688,7 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
     struct edge probeInput = {fromNodeID, toNodeID, edgeLabel};
     int hashValue = myHash(probeInput, hashTableSize);
 
+    //Remove edge using its hashcode
     int quad = 1;
     while (1) {
         if (db[(hashValue + quad)%hashTableSize].fromNode == probeInput.fromNode &&
@@ -699,9 +710,12 @@ void HashjoinDeleteEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 }
 
 void HashjoinDeleteDatabase(HashjoinDatabase database){
+    //set to correct type from void pointer
     struct edge_db *dbstruct = (struct edge_db *) database;
-    free(dbstruct);
+
+    free(dbstruct); //free the allocated hashtable
 }
+
 
 
 
