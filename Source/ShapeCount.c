@@ -684,6 +684,11 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                         already_inserted = 1;
                         break;
                     }
+
+                    if (already_inserted == 1){
+                        break;
+                    }
+
                     valids1_linear_prober++;
                 }
 
