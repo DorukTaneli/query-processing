@@ -1,5 +1,5 @@
 //#include <limits.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 
 typedef void* SortMergeJoinDatabase;
 
@@ -533,7 +533,7 @@ int HashjoinFindEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeI
 }
 
 void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel){
-    printf("InsertEdge called\n");
+    //printf("InsertEdge called\n");
     struct edge_db *dbstruct = (struct edge_db *) database;
 
     struct edge *db = dbstruct->db;
@@ -556,7 +556,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 
 
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
-    //printf("_____FUNCTION START_______ \n");
+    printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
