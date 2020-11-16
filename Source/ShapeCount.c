@@ -544,7 +544,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
     int hashValue = myHash(buildInput, hashTableSize);
 
     int quad = 1;
-    while (1) {
+    while (quad < hashTableSize) {
         if (db[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
             db[(hashValue + quad)%hashTableSize] = buildInput;
             //printf("Inserted edge: %d \n", db[i].edgeLabel);
@@ -556,7 +556,7 @@ void HashjoinInsertEdge(HashjoinDatabase database, int fromNodeID, int toNodeID,
 
 
 int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, int edgeLabel3){
-    printf("_____FUNCTION START_______ \n");
+    //printf("_____FUNCTION START_______ \n");
     struct edge_db *dbstruct = (struct edge_db *) database;
     struct edge *db = dbstruct->db;
     int hashTableSize = dbstruct->length;
@@ -589,12 +589,12 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             int hashValue = toHash(edgeLabel1, hashTableSize);
 
             int quad = 1;
-            while (1) {
+            while (quad < hashTableSize) {
                 if (edge1matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
                     edge1matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel1;
                     edge1matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge1matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -608,12 +608,12 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             int hashValue = fromHash(edgeLabel2, hashTableSize);
 
             int quad = 1;
-            while (1) {
+            while (quad < hashTableSize) {
                 if (edge2matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
                     edge2matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel2;
                     edge2matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
                     edge2matches[(hashValue + quad)%hashTableSize].fromNode = db[i].fromNode;
-                    printf("Inserted edge: %d \n", db[i].edgeLabel);
+                    //printf("Inserted edge: %d \n", db[i].edgeLabel);
                     break;    
                 }
                 quad++;
@@ -627,7 +627,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             int hashValue = fromHash(edgeLabel3, hashTableSize);
 
             int quad = 1;
-            while (1) {
+            while (quad < hashTableSize) {
                 if (edge3matches[(hashValue + quad)%hashTableSize].edgeLabel == -1) {
                     edge3matches[(hashValue + quad)%hashTableSize].edgeLabel = edgeLabel3;
                     edge3matches[(hashValue + quad)%hashTableSize].toNode = db[i].toNode;
@@ -708,7 +708,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //TESTING 
 
-    
+    /*
 
     printf("Edge1: \n");
     for (int i = 0; i<hashTableSize; i++){
@@ -744,6 +744,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    */
     
 
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
@@ -791,12 +792,15 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
     
+    /*
     printf("VALIDS 3: \n");
     for (int i = 0; i<hashTableSize; i++){
         if (valids3[i].edgeLabel != -1) {
             printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
         }
     }
+
+    */
     
 
     //Run through valids3
