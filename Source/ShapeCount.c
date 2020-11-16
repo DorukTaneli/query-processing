@@ -126,14 +126,10 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     qsort(edge1matches, (sizeof(edge1matches)/sizeof(edge1matches[0])), sizeof(edge1matches[0]), &comparatorForTo);
     qsort(edge2matches, (sizeof(edge2matches)/sizeof(edge2matches[0])), sizeof(edge2matches[0]), &comparatorForFrom);
 
-    int leftIter = 0;
-    int rightIter = 0;
-
     //valids contain the edges with desired labels that are connected to each other
-    struct edge valids1[totNoEdges];
-    struct edge valids2[totNoEdges];
-
-    for(int i=0; i<totNoEdges; i++) {
+    struct edge valids1[totNoEdges]; //for edges1 with label1
+    struct edge valids2[totNoEdges]; //for edges2 with label2
+    for(int i=0; i<totNoEdges; i++) { //initialize to -1
         valids1[i].fromNode = -1;
         valids1[i].toNode = -1;
         valids1[i].edgeLabel = -1;
@@ -145,6 +141,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
     //SortMergeJoin Code from slides modified to handle non-uniqeness
     int validIter = 0;
+    int leftIter = 0;
+    int rightIter = 0;
     while(leftIter < totNoEdges && rightIter < totNoEdges) {
         struct edge leftInput = edge1matches[leftIter];
         struct edge rightInput = edge2matches[rightIter];
@@ -184,12 +182,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     qsort(valids2, (sizeof(valids2)/sizeof(valids2[0])), sizeof(valids2[0]), &comparatorForTo);
     qsort(edge3matches, (sizeof(edge3matches)/sizeof(edge3matches[0])), sizeof(edge3matches[0]), &comparatorForFrom);
 
-    leftIter = 0;
-    rightIter = 0;
-
-    //valids3 contains the third edge connected to edges with desired labels
+    //valids3 contains the third edge connected to edge2 with desired labels
     struct edge valids3[totNoEdges];
-
     for(int i=0; i<totNoEdges; i++) {
         valids3[i].fromNode = -1;
         valids3[i].toNode = -1;
@@ -197,6 +191,8 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     //SortMergeJoin Code from slides modified to handle non-uniqeness
+    leftIter = 0;
+    rightIter = 0;
     validIter = 0;
     while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
         struct edge leftInput = valids2[leftIter];
