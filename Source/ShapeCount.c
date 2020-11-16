@@ -85,6 +85,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     struct edge edge2matches[totNoEdges];
     struct edge edge3matches[totNoEdges];
 
+    //fill the arrays with respective edges, put -1 to empty spots
     for (int i = 0; i<totNoEdges; i++) {
         if(db[i].edgeLabel == edgeLabel1) {
             edge1matches[i].fromNode = db[i].fromNode;
@@ -122,7 +123,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
 
 
     //SortMergeJoin1:
-    //edges1-toNode = edges2-fromNode
+    //edges1-toNode == edges2-fromNode
     qsort(edge1matches, (sizeof(edge1matches)/sizeof(edge1matches[0])), sizeof(edge1matches[0]), &comparatorForTo);
     qsort(edge2matches, (sizeof(edge2matches)/sizeof(edge2matches[0])), sizeof(edge2matches[0]), &comparatorForFrom);
 
@@ -139,7 +140,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         valids2[i].edgeLabel = -1;
     }
 
-    //SortMergeJoin Code from slides modified to handle non-uniqeness
+    //SortMergeJoin code from slides modified to handle non-uniqeness
     int validIter = 0;
     int leftIter = 0;
     int rightIter = 0;
@@ -156,6 +157,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         else if(rightInput.fromNode < leftInput.toNode)
             rightIter++;
         else {
+            //write to output
             valids1[validIter].fromNode = edge1matches[leftIter].fromNode;
             valids1[validIter].toNode = edge1matches[leftIter].toNode;
             valids1[validIter].edgeLabel = edge1matches[leftIter].edgeLabel;
@@ -178,7 +180,7 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     //SortMergeJoin2:
-    //edges2-toNode = edges3-fromNode
+    //edges2-toNode == edges3-fromNode
     qsort(valids2, (sizeof(valids2)/sizeof(valids2[0])), sizeof(valids2[0]), &comparatorForTo);
     qsort(edge3matches, (sizeof(edge3matches)/sizeof(edge3matches[0])), sizeof(edge3matches[0]), &comparatorForFrom);
 
@@ -224,6 +226,12 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
+
+    //SortMergeJoin3:
+    //edges3-toNode == edges1-fromNode
+    qsort(valids3, (sizeof(valids3)/sizeof(valids3[0])), sizeof(valids3[0]), &comparatorForTo);
+    qsort(valids1, (sizeof(valids1)/sizeof(valids1[0])), sizeof(valids1[0]), &comparatorForFrom);
+
     //valids3_FINAL contains the last edge of the closed triangle with desired labels
     struct edge valids3_FINAL[totNoEdges];
     for(int i=0; i<totNoEdges; i++) {
@@ -232,12 +240,10 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         valids3_FINAL[i].edgeLabel = -1;
     }
 
-    qsort(valids3, (sizeof(valids3)/sizeof(valids3[0])), sizeof(valids3[0]), &comparatorForTo);
-    qsort(valids1, (sizeof(valids1)/sizeof(valids1[0])), sizeof(valids1[0]), &comparatorForFrom);
+    //SortMergeJoin Code from slides modified to handle non-uniqeness
     leftIter = 0;
     rightIter = 0;
     validIter = 0;
-
     while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
         struct edge leftInput = valids3[leftIter];
         struct edge rightInput = valids1[rightIter];
@@ -268,53 +274,22 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
         }
     }
 
-    
-
+    //Count and return the number of triangles
     int final_count = 0;
-
-    
-    /*
-    printf("VALIDS 1: \n");
-    for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
-        if (valids1[i].edgeLabel != -1){
-            printf("For: %d, To: %d, Label: %d \n", valids1[i].fromNode, valids1[i].toNode, valids1[i].edgeLabel);
-        }
-    }
-
-    printf("VALIDS 2: \n");
-    for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
-        if (valids2[i].edgeLabel != -1){
-            printf("For: %d, To: %d, Label: %d \n", valids2[i].fromNode, valids2[i].toNode, valids2[i].edgeLabel);
-        }
-    }
-
-    printf("VALIDS 3: \n");
-    for(int i=0; i< sizeof(valids3_FINAL)/sizeof(valids3_FINAL[0]); i++){
-        if (valids3_FINAL[i].edgeLabel != -1){
-            printf("For: %d, To: %d, Label: %d \n", valids3_FINAL[i].fromNode, valids3_FINAL[i].toNode, valids3_FINAL[i].edgeLabel);
-        }
-    }
-    */
-    
-
-
     int v1_counter = 0;
     int v2_counter = 0;
     int v3_counter = 0;
 
-    //printf("valids3: \n ");
     for(int i=0; i< sizeof(valids1)/sizeof(valids1[0]); i++){
         if (valids1[i].edgeLabel != -1){
             v1_counter++;
         }
     }
-
     for(int i=0; i< sizeof(valids2)/sizeof(valids2[0]); i++){
         if (valids2[i].edgeLabel != -1){
             v2_counter++;
         }
     }
-
     for(int i=0; i< sizeof(valids3_FINAL)/sizeof(valids3_FINAL[0]); i++){
         if (valids3_FINAL[i].edgeLabel != -1){
             v3_counter++;
@@ -331,56 +306,6 @@ int SortMergeJoinRunQuery(SortMergeJoinDatabase database, int edgeLabel1, int ed
     }
 
     return numTriangles;
-
-    
-    //NOT NEEDED
-
-    
-    //printf("Second join completed \n");
-
-    // edges3 toNode = edges1 fromNode
-    qsort(valids3, (sizeof(valids3)/sizeof(valids3[0])), sizeof(valids3[0]), &comparatorForTo);
-    qsort(valids1, (sizeof(valids1)/sizeof(valids1[0])), sizeof(valids1[0]), &comparatorForFrom);
-
-    //printf("QSORT 3 completed \n");
-
-    leftIter = 0;
-    rightIter = 0;
-    int count = 0;
-    while(leftIter < (totNoEdges) && rightIter < (totNoEdges)) {
-        struct edge leftInput = valids3[leftIter];
-        struct edge rightInput = valids1[rightIter];
-        if(leftInput.toNode == -1)
-            leftIter++;
-        else if(rightInput.fromNode == -1)
-            rightIter++;
-        else if(leftInput.toNode < rightInput.fromNode)
-            leftIter++;
-        else if(rightInput.fromNode < leftInput.toNode)
-            rightIter++;
-        else {
-            //Write to output
-            count++;
-            
-            //Check for non-uniqueness
-            if (leftInput.toNode == valids3[leftIter+1].toNode)
-                leftIter++;
-            else if (rightInput.fromNode == valids1[rightIter+1].fromNode)
-                rightIter++;
-            else {
-                leftIter++;
-                rightIter++;
-            }
-        }
-    }
-    /*
-    if (count > 0 && count != 3) {
-        printf("HERE count= %d",count);
-        return (count + 1)/2;
-    }
-    */
-    return count;
-    
 }
 
 void SortMergeJoinDeleteEdge(SortMergeJoinDatabase database, int fromNodeID, int toNodeID, int edgeLabel) {
@@ -618,6 +543,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
                         break;
                     }
 
+                    //If an edge was already inserted we break and don't attempt it again
                     if (already_inserted == 1){
                         break;
                     }
