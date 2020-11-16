@@ -640,6 +640,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
+    printf("edgeXmatches filled\n");
 
     // edges1 toNode = edges2 fromNode
     struct edge valids1[hashTableSize]; //FROM
@@ -661,6 +662,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
     }
 
     //ITERATING OVER EDGE 1 MATCHES
+    printf("ITERATING OVER EDGE 1 MATCHES\n");
     for (int iter = 0; iter<hashTableSize; iter++){
 
         int fromHashEdge2 = fromHash(edge1matches[iter].toNode, hashTableSize);
@@ -749,7 +751,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
 
-
+    printf("edge3matches for loop\n");
     for (int i = 0; i<hashTableSize;i++){
         int valids1_edge3toHash = toHash(edge3matches[i].toNode, hashTableSize);
         int valids1_edge3_lp = 0;
@@ -805,6 +807,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //Run through valids3
     //If match on valids1 has a triangle with 
+    printf("count valids");
 
     int valids1_counter = 0;
     int valids2_counter = 0;
