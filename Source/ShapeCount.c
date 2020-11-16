@@ -1,5 +1,5 @@
 //#include <limits.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 typedef void* SortMergeJoinDatabase;
 
@@ -708,7 +708,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
 
     //TESTING 
 
-    /*
+    
 
     printf("Edge1: \n");
     for (int i = 0; i<hashTableSize; i++){
@@ -744,7 +744,7 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
         }
     }
 
-    */
+    
 
     //for loop through edge3matches then see if the edge corresponds to a valid in both valids1 and valids2
 
@@ -790,14 +790,14 @@ int HashjoinRunQuery(HashjoinDatabase database, int edgeLabel1, int edgeLabel2, 
             }
         }
     }
-    /*
+    
     printf("VALIDS 3: \n");
     for (int i = 0; i<hashTableSize; i++){
         if (valids3[i].edgeLabel != -1) {
             printf("fromNode: %d, toNode: %d, edgeLabel %d \n", valids3[i].fromNode,valids3[i].toNode, valids3[i].edgeLabel);
         }
     }
-    */
+    
 
     //Run through valids3
     //If match on valids1 has a triangle with 
